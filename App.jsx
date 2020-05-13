@@ -1,8 +1,15 @@
 import LottieView from 'lottie-react-native';
 import React from 'react';
 import {SafeAreaView, StatusBar, Text, View, StyleSheet} from 'react-native';
+import codePush from 'react-native-code-push';
 
-export default class BasicExample extends React.Component {
+class App extends React.Component {
+  componentWillMount() {
+    codePush.sync({
+      updateDialog: true,
+      installMode: codePush.InstallMode.IMMEDIATE,
+    });
+  }
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -29,6 +36,8 @@ export default class BasicExample extends React.Component {
     );
   }
 }
+
+export default codePush(App);
 
 const styles = StyleSheet.create({
   container: {
