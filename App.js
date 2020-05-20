@@ -13,7 +13,7 @@ class AppComponent extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="transparent" />
+        <StatusBar barStyle="dark-content" backgroundColor="white" />
         <View style={styles.body}>
           <LottieView
             source={require('./src/assets/bus.json')}
@@ -22,15 +22,7 @@ class AppComponent extends React.Component {
             style={{width: '100%'}}
             resizeMode={'contain'}
           />
-          <Text
-            style={{
-              fontSize: 40,
-              letterSpacing: 4,
-              fontFamily: 'BDPBIRGULA',
-              color: '#FF7000',
-            }}>
-            dimo
-          </Text>
+          <Text style={styles.title}>dimo</Text>
         </View>
       </SafeAreaView>
     );
@@ -49,6 +41,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    marginTop: -30,
+    marginTop: -60,
+  },
+  title: {
+    fontSize: 40,
+    letterSpacing: 4,
+    fontFamily: 'BDPBIRGULA',
+    color: '#FF7000',
   },
 });
