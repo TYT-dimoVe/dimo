@@ -1,9 +1,9 @@
 import LottieView from 'lottie-react-native';
 import React from 'react';
-import {SafeAreaView, StatusBar, Text, View, StyleSheet} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import codePush from 'react-native-code-push';
 
-class App extends React.Component {
+class AppComponent extends React.Component {
   componentWillMount() {
     codePush.sync({
       updateDialog: true,
@@ -37,7 +37,8 @@ class App extends React.Component {
   }
 }
 
-export default codePush(App);
+const App = codePush(AppComponent);
+export default App;
 
 const styles = StyleSheet.create({
   container: {
