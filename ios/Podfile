@@ -79,6 +79,8 @@ target 'dimo' do
 
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
   target 'dimoTests' do
     inherit! :complete
     # Pods for testing
