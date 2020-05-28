@@ -1,8 +1,7 @@
 import LottieView from 'lottie-react-native';
 import React from 'react';
-import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import codePush from 'react-native-code-push';
-
 class AppComponent extends React.Component {
   componentWillMount() {
     codePush.sync({
@@ -19,7 +18,7 @@ class AppComponent extends React.Component {
             source={require('./src/assets/bus.json')}
             autoPlay
             loop
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             resizeMode={'contain'}
           />
           <Text style={styles.title}>dimo</Text>
