@@ -1,9 +1,8 @@
 import LottieView from 'lottie-react-native';
 import React from 'react';
-import {SafeAreaView, StatusBar, Text, View, StyleSheet} from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import codePush from 'react-native-code-push';
-
-class App extends React.Component {
+class AppComponent extends React.Component {
   componentWillMount() {
     codePush.sync({
       updateDialog: true,
@@ -13,31 +12,24 @@ class App extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="transparent" />
+        <StatusBar barStyle="dark-content" backgroundColor="white" />
         <View style={styles.body}>
           <LottieView
             source={require('./src/assets/bus.json')}
             autoPlay
             loop
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             resizeMode={'contain'}
           />
-          <Text
-            style={{
-              fontSize: 40,
-              letterSpacing: 4,
-              fontFamily: 'BDPBIRGULA',
-              color: '#FF7000',
-            }}>
-            dimo
-          </Text>
+          <Text style={styles.title}>dimo</Text>
         </View>
       </SafeAreaView>
     );
   }
 }
 
-export default codePush(App);
+const App = codePush(AppComponent);
+export default App;
 
 const styles = StyleSheet.create({
   container: {
@@ -48,6 +40,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    marginTop: -30,
+    marginTop: -60,
+  },
+  title: {
+    fontSize: 40,
+    letterSpacing: 4,
+    fontFamily: 'BDPBIRGULA',
+    color: '#FF7000',
   },
 });
