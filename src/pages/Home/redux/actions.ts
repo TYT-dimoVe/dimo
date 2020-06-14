@@ -1,6 +1,11 @@
 import { defineAction } from 'redux-typed-actions';
-import { Response, ResponseFailed, ResponseSuccess } from 'screens/theme/model';
 
-export const TestRequest = defineAction<Response>('TEST_REQUEST');
-export const TestSuccess = defineAction<ResponseSuccess>('TEST_SUCCESS');
-export const TestFailed = defineAction<ResponseFailed>('TEST_FAILED');
+export const GetCities = defineAction<any>('GET_CITIES');
+export const GetCitiesSuccess = defineAction<any>('GET_CITIES_SUCCESS');
+export const GetCitiesFailed = defineAction<any>('GET_CITIES_FAILED');
+
+export const SearchTrips = defineAction<any>('SEARCH_TRIPS');
+export const SearchTripsSuccess = defineAction<any>('SEARCH_TRIPS_SUCCESS');
+export const SearchTripsFailed = defineAction<any>('SEARCH_TRIPS_FAILED');
+
+export const SaveRoundTrip = defineAction<any>('SAVE_ROUND_TRIPS');

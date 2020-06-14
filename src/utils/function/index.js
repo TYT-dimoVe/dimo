@@ -1,4 +1,6 @@
 import moment from 'moment';
+import 'intl';
+import 'intl/locale-data/jsonp/en';
 
 export const IS_DEV = true;
 

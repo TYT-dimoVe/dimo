@@ -1,3 +1,3 @@
 export const constant = {
-    RootKey: 'Root',
+    HomeKey: 'HomeStore',
   };
