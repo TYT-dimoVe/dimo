@@ -5,9 +5,7 @@ export interface homeState {
     date: string
     page: number;
     isRoundTrip:  boolean;
-    pickUpCode: string
-    dropDownCode: string
-    roundTripDate: string,
-    pickUpCity: string,
-    dropDownCity: string
+    roundTripPickUp: string
+    roundTripDropDown: string
+    roundTripDate: string
   }

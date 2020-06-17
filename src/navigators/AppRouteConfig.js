@@ -4,10 +4,12 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import SplashScreen from 'pages/Splash';
 import HomeScreen from 'pages/Home';
+import SearchTripScreen from 'pages/SearchTrip';
 
 const MainStack = createStackNavigator(
   {
     Home: { screen: HomeScreen },
+    SearchTrip: { screen: SearchTripScreen}
   },
   {
     headerMode: 'null',

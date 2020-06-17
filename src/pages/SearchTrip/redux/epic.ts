@@ -6,7 +6,7 @@ import { GlobalLoadingSetup } from 'components';
 import { exhaustMap, catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { StackActions, NavigationActions } from 'react-navigation';
-import { store } from '../../../reduxs/store';
+import { store } from 'reduxs/store';
 import { request } from 'utils/network/api';
 
 const getCities$ = (action$: Observable<PlainAction>) =>

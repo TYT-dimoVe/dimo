@@ -105,8 +105,8 @@ class HomeComponent extends React.Component<Props, State> {
           }}
         />
         <View style={{ marginVertical: 7 * ratio, borderColor: '#000', borderStyle: 'dashed', borderWidth: 1 * ratio, borderRadius: 1, zIndex: 9999 }}>
-          <TouchableOpacity activeOpacity={0.9} style={styles.swapIconWrap} onPress={() => this.switchCity()}>
-            <View>
+          <TouchableOpacity style={{ position: 'absolute', right: 16 * ratio, top: -20 * ratio, width: 48 * ratio, height: 48 * ratio, alignItems: 'center', justifyContent: 'center'}} onPress={() => this.switchCity()}>
+            <View style={styles.swapIconWrap}>
               <MaterialCommunityIcons name={'swap-vertical'} size={24 * ratio} color={'#000'} />
             </View>
           </TouchableOpacity>
@@ -245,9 +245,11 @@ class HomeComponent extends React.Component<Props, State> {
 
     const saveRoundTrip = {
       isRoundTrip: this.state.isRoundTrip,
-      roundTripPickUp: this.state.dropdownCode,
-      roundTripDropDown: this.state.pickUpCode,
       roundTripDate: this.state.endDatePick,
+      pickUpCode: this.state.pickUpCode,
+      dropDownCode: this.state.dropdownCode,
+      pickUpCity: this.state.pickUpCity,
+      dropDownCity: this.state.dropdownCity,
     }
 
     this.props.searchTrips(searchVal);
@@ -255,11 +257,9 @@ class HomeComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { cities } = this.props;
-
     return (
       <SafeAreaView style={styles.container}>
-        <CHeader type={HEADER_TYPE.MAIN} viewNoti={() => console.info('View noti')} searchOrder={() => console.info('Search order')} />
+        <CHeader type={HEADER_TYPE.MAIN} viewNoti={() => console.info('View noti')} searchOrder={() => {this.props.navigation.navigate('SearchTrip')}} />
         <KeyboardAwareScrollView style={styles.listWrap}
           nestedScrollEnabled={false}
           showsVerticalScrollIndicator={false}>
@@ -285,7 +285,8 @@ class HomeComponent extends React.Component<Props, State> {
                     let endDate = new Date(y, m, d);
                     this.setState({ startDatePick: moment(date).format('DD/MM/YYYY'), startCalendarVisible: false, endDate: endDate, endDatePick: moment(endDate).format('DD/MM/YYYY') });
                   }}
-                  todayBackgroundColor={COLOR.DEACTIVE_GRAY}
+                  todayBackgroundColor={COLOR.DARK_BLUE}
+                  todayTextStyle={{ color: COLOR.WHITE}}
                   selectedDayColor={COLOR.DARK_BLUE}
                   selectedDayTextColor={COLOR.WHITE}
                   textStyle={{
@@ -311,7 +312,8 @@ class HomeComponent extends React.Component<Props, State> {
                   onDateChange={(date) => {
                     this.setState({ endDatePick: moment(date).format('DD/MM/YYYY'), endCalendarVisible: false });
                   }}
-                  todayBackgroundColor={COLOR.DEACTIVE_GRAY}
+                  todayBackgroundColor={COLOR.DARK_BLUE}
+                  todayTextStyle={{ color: COLOR.WHITE}}
                   selectedDayColor={COLOR.DARK_BLUE}
                   selectedDayTextColor={COLOR.WHITE}
                   textStyle={{
@@ -383,9 +385,7 @@ const styles = StyleSheet.create({
     color: COLOR.DARK_BLUE
   },
   swapIconWrap: {
-    position: 'absolute',
-    right: 16 * ratio,
-    top: -20 * ratio,
+    
     backgroundColor: COLOR.WHITE,
     borderRadius: 9 * ratio,
     shadowColor: '#000',

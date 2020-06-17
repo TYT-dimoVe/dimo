@@ -24,7 +24,7 @@ class AppComponent extends React.Component {
   componentWillMount() {
     this.backHandler();
     codePush.sync({
-      updateDialog: true,
+      updateDialog: false,
       installMode: codePush.InstallMode.IMMEDIATE,
     });
   }
@@ -74,7 +74,8 @@ class AppComponent extends React.Component {
   }
 }
 
-const App = codePush(AppComponent);
+// const App = codePush(AppComponent);
+const App = AppComponent
 export default App;
 
 const styles = StyleSheet.create({

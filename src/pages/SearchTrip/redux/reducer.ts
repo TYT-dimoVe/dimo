@@ -9,11 +9,9 @@ const initialState: homeState = {
   date: '',
   page: 1,
   isRoundTrip:  false,
-  pickUpCode: '',
-  dropDownCode: '',
+  roundTripPickUp: '',
+  roundTripDropDown: '',
   roundTripDate: '',
-  pickUpCity: '',
-  dropDownCity: ''
 };
 
 export function homeReducer(state: homeState = initialState, action: PlainAction) {
@@ -34,11 +32,9 @@ export function homeReducer(state: homeState = initialState, action: PlainAction
       return {
         ...state,
         isRoundTrip: action.payload.isRoundTrip,
-        pickUpCode: action.payload.roundTripPickUp,
-        dropDownCode: action.payload.roundTripDropDown,
+        roundTripPickUp: action.payload.roundTripPickUp,
+        roundTripDropDown: action.payload.roundTripDropDown,
         roundTripDate: action.payload.roundTripDate,
-        pickUpCity: action.payload.pickUpCity,
-        dropDownCity: action.payload.dropDownCity
       }
     default:
       return state;
