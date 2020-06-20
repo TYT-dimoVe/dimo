@@ -1,11 +1,9 @@
 import { defineAction } from 'redux-typed-actions';
 
-export const GetCities = defineAction<any>('GET_CITIES');
-export const GetCitiesSuccess = defineAction<any>('GET_CITIES_SUCCESS');
-export const GetCitiesFailed = defineAction<any>('GET_CITIES_FAILED');
+export const GetFilter = defineAction<any>('GET_FILTER');
+export const GetFilterSuccess = defineAction<any>('GET_FILTER_SUCCESS');
+export const GetFilterFailed = defineAction<any>('GET_FILTER_FAILED');
 
-export const SearchTrips = defineAction<any>('SEARCH_TRIPS');
-export const SearchTripsSuccess = defineAction<any>('SEARCH_TRIPS_SUCCESS');
-export const SearchTripsFailed = defineAction<any>('SEARCH_TRIPS_FAILED');
-
-export const SaveRoundTrip = defineAction<any>('SAVE_ROUND_TRIPS');
+export const GetSeat = defineAction<any>('GET_SEAT');
+export const GetSeatSuccess = defineAction<any>('GET_SEAT_SUCCESS');
+export const GetSeatFailed = defineAction<any>('GET_SEAT_FAILED');

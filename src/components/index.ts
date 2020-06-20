@@ -3,6 +3,7 @@ import CText from './Text';
 import Dropdown from './Dropdown';
 import { GlobalLoading, GlobalLoadingSetup } from './GlobalLoading/';
 import Check from './Check';
+import CInput from './TextInput'
 export {
     CHeader,
     CText,
@@ -10,4 +11,5 @@ export {
     GlobalLoading,
     GlobalLoadingSetup,
     Check,
+    CInput
 }

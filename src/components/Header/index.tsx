@@ -46,7 +46,7 @@ class Header extends React.Component<Props, {}> {
         }
         if (type === HEADER_TYPE.INFO) {
             return (
-                <InfoHeader onBack={this.props.onBack} pickup={this.props.pickup} dropdown={this.props.dropdown} headerSubtitle={this.props.headerSubtitle} onLeftPress={this.props.onBack} onRightPress={this.props.onRightPress} />
+                <InfoHeader onBack={this.props.onBack} pickup={this.props.pickup} dropdown={this.props.dropdown} headerSubtitle={this.props.headerSubtitle} onLeftPress={this.props.onLeftPress} onRightPress={this.props.onRightPress} />
             )
         }
         return null;

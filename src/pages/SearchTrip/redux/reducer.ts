@@ -1,41 +1,55 @@
 import { PlainAction } from 'redux-typed-actions';
-import { homeState } from 'pages/Home/model';
-import { GetCitiesSuccess, SearchTripsSuccess, SaveRoundTrip } from 'pages/Home/redux/actions';
+import { searchState } from 'pages/SearchTrip/model';
+import { GetFilterSuccess, GetSeatSuccess } from './actions';
+import { FilterTripsSuccess } from 'pages/Home/redux/actions';
 
-const initialState: homeState = {
-  cities: [],
-  searchData: [],
-  total: 0,
-  date: '',
-  page: 1,
-  isRoundTrip:  false,
-  roundTripPickUp: '',
-  roundTripDropDown: '',
-  roundTripDate: '',
+const initialState: searchState = {
+  timeStart: '',
+  pickUp: '',
+  timeVal: '',
+  busOperatorVal: '',
+  busTypeVal: '',
+  floor1: [],
+  floor2: [],
+  column: 0,
+  row: 0,
+  listTimeStart: [],
+  listBusOperatorId: [],
+  listBusType: [],
+  priceFrom: 0,
+  priceTo: 0,
+  price: 0,
 };
 
-export function homeReducer(state: homeState = initialState, action: PlainAction) {
+export function searchReducer(state: searchState = initialState, action: PlainAction) {
   switch (action.type) {
-    case GetCitiesSuccess.type:
+    case GetFilterSuccess.type:
       return { 
         ...state,
-        cities: action.payload
+        listTimeStart: action.payload.timeStart,
+        listBusOperatorId: action.payload.busOperatorId,
+        listBusType: action.payload.busType,
        };
-    case SearchTripsSuccess.type:
-      return {
-        ...state,
-        searchData: action.payload.data,
-        total: action.payload.totalItems,
-        date: action.payload.date,
-      }
-    case SaveRoundTrip.type:
-      return {
-        ...state,
-        isRoundTrip: action.payload.isRoundTrip,
-        roundTripPickUp: action.payload.roundTripPickUp,
-        roundTripDropDown: action.payload.roundTripDropDown,
-        roundTripDate: action.payload.roundTripDate,
-      }
+       case GetSeatSuccess.type:
+        return {
+          ...state,
+          floor1: action.payload.result.floor1,
+          floor2: action.payload.result.floor2,
+          column: action.payload.result.column,
+          row: action.payload.result.row,
+          timeStart: action.payload.timeStart,
+          pickUp: action.payload.pickUp,
+          price: action.payload.price,
+        }
+        case FilterTripsSuccess.type:
+          return {
+            ...state,
+            timeVal: action.payload.timeVal,
+            busOperatorVal: action.payload.busOperatorVal,
+            busTypeVal: action.payload.busTypeVal,
+            priceFrom: action.payload.priceFrom,
+            priceTo: action.payload.priceTo,
+          }
     default:
       return state;
   }

@@ -40,11 +40,11 @@ class InfoHeader extends React.Component<Props, {}> {
               <CText bold color={COLOR.WHITE} fontSize={24}>{this.props.dropdown}</CText>
             </View>
             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-              <TouchableOpacity onPress={this.props.onBack}>
+              <TouchableOpacity onPress={this.props.onLeftPress}>
                 <Feather name={'chevron-left'} color={COLOR.WHITE} size={24 * ratio} />
               </TouchableOpacity>
               <CText bold color={COLOR.WHITE} fontSize={20}>{this.props.headerSubtitle}</CText>
-              <TouchableOpacity onPress={this.props.onBack}>
+              <TouchableOpacity onPress={this.props.onRightPress}>
                 <Feather name={'chevron-right'} color={COLOR.WHITE} size={24 * ratio} />
               </TouchableOpacity>
             </View>

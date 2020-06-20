@@ -1,70 +1,94 @@
 import { Observable } from 'redux';
 import { PlainAction } from 'redux-typed-actions';
 import { ofType, combineEpics } from 'redux-observable';
-import { GetCities, GetCitiesFailed, GetCitiesSuccess, SearchTrips, SearchTripsSuccess, SearchTripsFailed } from 'pages/Home/redux/actions';
+import { GetFilter, GetFilterFailed, GetFilterSuccess, GetSeatSuccess, GetSeatFailed, GetSeat} from 'pages/SearchTrip/redux/actions';
 import { GlobalLoadingSetup } from 'components';
 import { exhaustMap, catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { StackActions, NavigationActions } from 'react-navigation';
-import { store } from 'reduxs/store';
+import { store } from '../../../reduxs/store';
 import { request } from 'utils/network/api';
 
-const getCities$ = (action$: Observable<PlainAction>) =>
+  const getFilter$ = (action$: Observable<PlainAction>) =>
   action$.pipe(
-    ofType(GetCities.type),
-    exhaustMap((action: any) => {
-      return request<any>({
-        method: 'GET',
-        url: 'cities',
-      }).pipe(
-        map((value) => {
-          if ((value as any).result.length > 0) {
-            return GetCitiesSuccess.get((value as any).result);
-          }
-          return GetCitiesFailed.get();
-        }),
-        catchError((error) => {
-          return of(GetCitiesFailed.get(error));
-        }),
-      );
-    }),
-  );
-
-  const searchTrips$ = (action$: Observable<PlainAction>) =>
-  action$.pipe(
-    ofType(SearchTrips.type),
+    ofType(GetFilter.type),
     exhaustMap((action: any) => {
       return request<any>({
         method: 'POST',
-        url: 'trips',
+        url: 'filterForTrips',
         param: action.payload,
         option: {
           format: 'json',
         },
       }).pipe(
         map((value) => {
-          if ((value as any).result.totalItems && (value as any).result.totalItems > 0) {
-            return SearchTripsSuccess.get((value as any).result);
+          if ((value as any).result) {
+            return GetFilterSuccess.get((value as any).result);
           }
-          return SearchTripsFailed.get();
+          return GetFilterFailed.get();
         }),
         catchError((error) => {
-          return of(GetCitiesFailed.get(error));
+          return of(GetFilterFailed.get(error));
         }),
       );
     }),
   );
 
-  const searchTripsSuccess$ = (action$: Observable<PlainAction>) =>
+  const getFilterSuccess$ = (action$: Observable<PlainAction>) =>
   action$.pipe(
-    ofType(SearchTripsSuccess.type),
+    ofType(GetFilterSuccess.type),
     map((action: any) => {
       return store.dispatch(
         NavigationActions.navigate({
-          routeName: 'SearchTrip',
+          routeName: 'Filter',
           params: {}
         }),
       );
     }),
   );
-export const homeEpics = combineEpics(getCities$, searchTrips$, searchTripsSuccess$);
+
+
+  const getSeats$ = (action$: Observable<PlainAction>) =>
+  action$.pipe( 
+    ofType(GetSeat.type),
+    exhaustMap((action: any) => {
+      return request<any>({
+        method: 'POST',
+        url: 'getSeat',
+        param: action.payload,
+        option: {
+          format: 'json',
+        },
+      }).pipe(
+        map((value) => {
+          if ((value as any).result) {
+            const data = {
+              pickUp: action.payload.pickUp,
+              timeStart: action.payload.timeStart,
+              price: action.payload.price,
+              result: (value as any).result,
+            }
+            return GetSeatSuccess.get(data);
+          }
+          return GetSeatFailed.get();
+        }),
+        catchError((error) => {
+          return of(GetSeatFailed.get(error));
+        }),
+      );
+    }),
+  );
+
+  const getSeatsSuccess$ = (action$: Observable<PlainAction>) =>
+  action$.pipe(
+    ofType(GetSeatSuccess.type),
+    map((action: any) => {
+      return store.dispatch(
+        NavigationActions.navigate({
+          routeName: 'ChooseSeat',
+          params: {}
+        }),
+      );
+    }),
+  );
+export const searchEpics = combineEpics(getFilter$, getFilterSuccess$, getSeats$ , getSeatsSuccess$);

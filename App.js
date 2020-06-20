@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/reduxs/store';
 import { getCurrentRouteName } from 'utils/function';
+import {  GlobalLoading, GlobalLoadingSetup } from 'components';
 
 console.disableYellowBox = true;
 StatusBar.setTranslucent(true);
@@ -69,6 +70,7 @@ class AppComponent extends React.Component {
               <AppWithNavigationState />
             </PersistGate>
           </Provider>
+          <GlobalLoading ref={(ref) => GlobalLoadingSetup.setLoading(ref)} />
       </View>
     );
   }

@@ -5259,6 +5259,11 @@ lodash.camelcase@^4.3.0:
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
   integrity sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
 
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -6557,7 +6562,7 @@ q@^1.5.1:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
-qs@^6.9.1:
+qs@^6.9.1, qs@~6.9.1:
   version "6.9.4"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
   integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
@@ -6659,6 +6664,15 @@ react-native-gesture-handler@^1.6.1:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-google-places-autocomplete@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.7.2.tgz#94f41e5c8becc23e576ffb98dcc462eebe322e29"
+  integrity sha512-N0kWkcaZ6XA7oNUPJE0O+Jl0nMiEFls/xXGZaTWnGxTnJ+hMvCGhodfWvp9bNWkmbgbqdKB6wHVhc8pHjJOwVg==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    prop-types "^15.5.10"
+    qs "~6.9.1"
+
 react-native-indicators@^0.17.0:
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/react-native-indicators/-/react-native-indicators-0.17.0.tgz#92f95efaf5fb53be576dfe4e1980a25655a93f55"
@@ -6688,6 +6702,11 @@ react-native-make@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-native-make/-/react-native-make-1.0.1.tgz#3e919ca032bd67792040397504017c2a80a96417"
   integrity sha512-+Wo2JSp6NyeKleH9aZcdPsW7X8KiBOZkwx6L65UkPCDbk4FlcYd4yw+YIuK0SUVFkUaFHTU1n8LjIjFpT+YICA==
+
+react-native-maps@0.27.1:
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
+  integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
 
 react-native-material-buttons@^0.5.0:
   version "0.5.0"
@@ -6723,6 +6742,12 @@ react-native-material-ripple@^0.8.0:
 "react-native-material-textfield@git+https://github.com/noway/react-native-material-textfield.git#v0_12_0_with_0_62_fixes":
   version "0.12.0"
   resolved "git+https://github.com/noway/react-native-material-textfield.git#ab85973770e62202d7f5f83afb1c2f57e91318ca"
+  dependencies:
+    prop-types "^15.5.9"
+
+"react-native-material-textfield@https://github.com/hoaphantn7604/react-native-material-textfield":
+  version "0.12.0"
+  resolved "https://github.com/hoaphantn7604/react-native-material-textfield#185b3972f67f00444d2f5c174e11e1557449b4d0"
   dependencies:
     prop-types "^15.5.9"
 

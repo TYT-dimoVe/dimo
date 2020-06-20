@@ -1,5 +1,13 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { PlainAction } from 'redux-typed-actions';
@@ -8,8 +16,8 @@ import { HEADER_TYPE, ratio, COLOR } from 'config/themeUtils';
 import { CHeader, CText, Dropdown, Check } from 'components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { GetCities, SearchTrips, SaveRoundTrip } from './redux/actions';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import Feather from 'react-native-vector-icons/Feather'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Feather from 'react-native-vector-icons/Feather';
 import CalendarPicker from 'react-native-calendar-picker';
 import moment from 'moment';
 
@@ -23,7 +31,7 @@ const mapDispatchToProps = (dispatch: (action: PlainAction) => void) => {
   return {
     getCities: () => dispatch(GetCities.get()),
     searchTrips: (val: any) => dispatch(SearchTrips.get(val)),
-    saveRoundTrip: (val:any) => dispatch(SaveRoundTrip.get(val))
+    saveRoundTrip: (val: any) => dispatch(SaveRoundTrip.get(val)),
   };
 };
 
@@ -31,7 +39,7 @@ export interface Props extends NavigationInjectedProps {
   getCities: () => void;
   cities: any;
   searchTrips: (val: any) => void;
-  saveRoundTrip: (val:any) => void;
+  saveRoundTrip: (val: any) => void;
 }
 
 interface State {
@@ -87,12 +95,14 @@ class HomeComponent extends React.Component<Props, State> {
         <Dropdown
           containerStyle={styles.dropdownWrap}
           value={this.state.pickUpCity}
-          data={this.props.cities.map((item: any) => {
-            return {
-              label: item.cityTitle,
-              value: item.cityTitle,
-            };
-          })}
+          data={this.props.cities
+            .filter((item: any) => item.cityTitle !== this.state.dropdownCity)
+            .map((item: any) => {
+              return {
+                label: item.cityTitle,
+                value: item.cityTitle,
+              };
+            })}
           label={'Chọn điểm khởi hành'}
           onChange={(value) => {
             let pickup = '';
@@ -101,26 +111,42 @@ class HomeComponent extends React.Component<Props, State> {
                 pickup = item.cityCode;
               }
             });
-            this.setState({ pickUpCity: value, pickUpCode: pickup })
+            this.setState({ pickUpCity: value, pickUpCode: pickup });
           }}
         />
-        <View style={{ marginVertical: 7 * ratio, borderColor: '#000', borderStyle: 'dashed', borderWidth: 1 * ratio, borderRadius: 1, zIndex: 9999 }}>
-          <TouchableOpacity style={{ position: 'absolute', right: 16 * ratio, top: -20 * ratio, width: 48 * ratio, height: 48 * ratio, alignItems: 'center', justifyContent: 'center'}} onPress={() => this.switchCity()}>
-            <View style={styles.swapIconWrap}>
-              <MaterialCommunityIcons name={'swap-vertical'} size={24 * ratio} color={'#000'} />
-            </View>
-          </TouchableOpacity>
-
-        </View>
+        <View
+          style={{
+            marginVertical: 7 * ratio,
+            borderColor: '#000',
+            borderStyle: 'dashed',
+            borderWidth: 1 * ratio,
+            borderRadius: 1,
+          }}
+        />
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={styles.swapIconWrap}
+          onPress={() => this.switchCity()}>
+          <MaterialCommunityIcons
+            name={'swap-vertical'}
+            size={24 * ratio}
+            color={'#000'}
+          />
+        </TouchableOpacity>
         <Dropdown
-          containerStyle={[styles.dropdownWrap, { borderColor: COLOR.PRIMARY_ORANGE }]}
+          containerStyle={[
+            styles.dropdownWrap,
+            { borderColor: COLOR.PRIMARY_ORANGE },
+          ]}
           value={this.state.dropdownCity}
-          data={this.props.cities.filter((item: any) => item.cityTitle !== this.state.pickUpCity).map((item: any) => {
-            return {
-              label: item.cityTitle,
-              value: item.cityTitle,
-            };
-          })}
+          data={this.props.cities
+            .filter((item: any) => item.cityTitle !== this.state.pickUpCity)
+            .map((item: any) => {
+              return {
+                label: item.cityTitle,
+                value: item.cityTitle,
+              };
+            })}
           label={'Chọn điểm đến'}
           onChange={(value) => {
             let dropdown = '';
@@ -129,47 +155,90 @@ class HomeComponent extends React.Component<Props, State> {
                 dropdown = item.cityCode;
               }
             });
-            this.setState({ dropdownCity: value, dropdownCode: dropdown })
+            this.setState({ dropdownCity: value, dropdownCode: dropdown });
           }}
         />
       </View>
-    )
-  }
+    );
+  };
 
   switchCity = () => {
     let tmp = this.state.dropdownCity;
     this.setState({ dropdownCity: this.state.pickUpCity, pickUpCity: tmp });
-  }
+  };
 
   renderDatePick = () => {
     return (
       <View style={styles.datePickWrap}>
-        <TouchableOpacity activeOpacity={0.9} style={styles.calendarWrap} onPress={() => this.setState({ startCalendarVisible: true })}>
-          <Feather name={'calendar'} size={24 * ratio} color={COLOR.PRIMARY_BLUE} />
-          <CText bold fontSize={18} color={COLOR.DARK_BLUE} style={{ marginLeft: 16 * ratio }}>{this.state.startDatePick}</CText>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={styles.calendarWrap}
+          onPress={() => this.setState({ startCalendarVisible: true })}>
+          <Feather
+            name={'calendar'}
+            size={24 * ratio}
+            color={COLOR.PRIMARY_BLUE}
+          />
+          <CText
+            bold
+            fontSize={18}
+            color={COLOR.DARK_BLUE}
+            style={{ marginLeft: 16 * ratio }}>
+            {this.state.startDatePick}
+          </CText>
         </TouchableOpacity>
       </View>
-    )
-  }
+    );
+  };
 
   renderChooseOption = () => {
     return (
       <View>
         <View style={styles.datePickWrap}>
-          <CText bold color={COLOR.DARK_BLUE} fontSize={18}>Hành trình</CText>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 * ratio }}>
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', flex: 0.5 }} onPress={() => this.setState({ isRoundTrip: false })}>
+          <CText bold color={COLOR.DARK_BLUE} fontSize={18}>
+            Hành trình
+          </CText>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: 10 * ratio,
+            }}>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                flex: 0.5,
+              }}
+              onPress={() => this.setState({ isRoundTrip: false })}>
               <Check
                 style={{ padding: 0 }}
                 type="radio"
                 check={!this.state.isRoundTrip}
                 color={COLOR.PRIMARY_BLUE}
               />
-              <CText bold color={COLOR.DARK_BLUE} fontSize={18} style={{ marginLeft: 20 * ratio }}>Một chiều</CText>
+              <CText
+                bold
+                color={COLOR.DARK_BLUE}
+                fontSize={18}
+                style={{ marginLeft: 20 * ratio }}>
+                Một chiều
+              </CText>
             </TouchableOpacity>
             <TouchableOpacity
-              disabled={this.state.pickUpCity !== '' && this.state.dropdownCity !== '' ? false : true}
-              style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', flex: 0.5 }}
+              disabled={
+                this.state.pickUpCity !== '' && this.state.dropdownCity !== ''
+                  ? false
+                  : true
+              }
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                flex: 0.5,
+              }}
               onPress={() => this.setState({ isRoundTrip: true })}>
               <Check
                 style={{ padding: 0 }}
@@ -177,38 +246,70 @@ class HomeComponent extends React.Component<Props, State> {
                 check={this.state.isRoundTrip}
                 color={COLOR.PRIMARY_BLUE}
               />
-              <CText bold color={COLOR.DARK_BLUE} fontSize={18} style={{ marginLeft: 20 * ratio }}>Khứ hồi</CText>
+              <CText
+                bold
+                color={COLOR.DARK_BLUE}
+                fontSize={18}
+                style={{ marginLeft: 20 * ratio }}>
+                Khứ hồi
+              </CText>
             </TouchableOpacity>
           </View>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
   renderCitiesRound = () => {
     return (
       <View style={styles.citiWrap}>
         <View style={styles.roundCityWrap}>
-          <CText bold fontSize={16} color={COLOR.DARK_BLUE}>{this.state.dropdownCity}</CText>
+          <CText bold fontSize={16} color={COLOR.DARK_BLUE}>
+            {this.state.dropdownCity}
+          </CText>
         </View>
-        <View style={{ marginVertical: 7 * ratio, borderColor: '#000', borderStyle: 'dashed', borderWidth: 1 * ratio, borderRadius: 1, zIndex: 9999 }}></View>
-        <View style={[styles.roundCityWrap, { borderColor: COLOR.PRIMARY_ORANGE }]}>
-          <CText bold fontSize={16} color={COLOR.DARK_BLUE}>{this.state.pickUpCity}</CText>
+        <View
+          style={{
+            marginVertical: 7 * ratio,
+            borderColor: '#000',
+            borderStyle: 'dashed',
+            borderWidth: 1 * ratio,
+            borderRadius: 1,
+            zIndex: 9999,
+          }}></View>
+        <View
+          style={[styles.roundCityWrap, { borderColor: COLOR.PRIMARY_ORANGE }]}>
+          <CText bold fontSize={16} color={COLOR.DARK_BLUE}>
+            {this.state.pickUpCity}
+          </CText>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
   renderDatePickRound = () => {
     return (
       <View style={styles.datePickWrap}>
-        <TouchableOpacity activeOpacity={0.9} style={styles.calendarWrap} onPress={() => this.setState({ endCalendarVisible: true })}>
-          <Feather name={'calendar'} size={24 * ratio} color={COLOR.PRIMARY_BLUE} />
-          <CText bold fontSize={18} color={COLOR.DARK_BLUE} style={{ marginLeft: 16 * ratio }}>{this.state.endDatePick}</CText>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={styles.calendarWrap}
+          onPress={() => this.setState({ endCalendarVisible: true })}>
+          <Feather
+            name={'calendar'}
+            size={24 * ratio}
+            color={COLOR.PRIMARY_BLUE}
+          />
+          <CText
+            bold
+            fontSize={18}
+            color={COLOR.DARK_BLUE}
+            style={{ marginLeft: 16 * ratio }}>
+            {this.state.endDatePick}
+          </CText>
         </TouchableOpacity>
       </View>
-    )
-  }
+    );
+  };
 
   renderRoundTrip = () => {
     return (
@@ -216,32 +317,40 @@ class HomeComponent extends React.Component<Props, State> {
         {this.renderCitiesRound()}
         {this.renderDatePickRound()}
       </View>
-    )
-  }
+    );
+  };
 
   renderSearchBtn = () => {
     if (this.state.pickUpCity === '' || this.state.dropdownCity === '') {
       return (
-        <TouchableOpacity disabled={true} style={[styles.btnWrap, { backgroundColor: COLOR.DEACTIVE_GRAY }]}>
-          <CText bold color={COLOR.WHITE} fontSize={24} >Tìm chuyến</CText>
+        <TouchableOpacity
+          disabled={true}
+          style={[styles.btnWrap, { backgroundColor: COLOR.DEACTIVE_GRAY }]}>
+          <CText bold color={COLOR.WHITE} fontSize={24}>
+            Tìm chuyến
+          </CText>
         </TouchableOpacity>
-      )
+      );
     } else {
       return (
-        <TouchableOpacity style={styles.btnWrap} onPress={() => this.searchTrips()}>
-          <CText bold color={COLOR.WHITE} fontSize={24} >Tìm chuyến</CText>
+        <TouchableOpacity
+          style={styles.btnWrap}
+          onPress={() => this.searchTrips()}>
+          <CText bold color={COLOR.WHITE} fontSize={24}>
+            Tìm chuyến
+          </CText>
         </TouchableOpacity>
-      )
+      );
     }
-  }
+  };
 
   searchTrips = () => {
     const searchVal = {
       from: this.state.pickUpCode,
       to: this.state.dropdownCode,
       date: this.state.startDatePick,
-      page: 1
-    }
+      page: 1,
+    };
 
     const saveRoundTrip = {
       isRoundTrip: this.state.isRoundTrip,
@@ -250,28 +359,45 @@ class HomeComponent extends React.Component<Props, State> {
       dropDownCode: this.state.dropdownCode,
       pickUpCity: this.state.pickUpCity,
       dropDownCity: this.state.dropdownCity,
-    }
+    };
 
     this.props.searchTrips(searchVal);
     this.props.saveRoundTrip(saveRoundTrip);
-  }
+  };
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <CHeader type={HEADER_TYPE.MAIN} viewNoti={() => console.info('View noti')} searchOrder={() => {this.props.navigation.navigate('SearchTrip')}} />
-        <KeyboardAwareScrollView style={styles.listWrap}
+        <CHeader
+          type={HEADER_TYPE.MAIN}
+          viewNoti={() => console.info('View noti')}
+          searchOrder={() => {
+            this.props.navigation.navigate('SearchOrder');
+          }}
+        />
+        <KeyboardAwareScrollView
+          style={styles.listWrap}
           nestedScrollEnabled={false}
           showsVerticalScrollIndicator={false}>
-          <CText color={COLOR.DARK_BLUE} fontSize={30} bold style={{ marginHorizontal: 20 * ratio, marginBottom: 8 * ratio }}>Xin chào,</CText>
+          <CText
+            color={COLOR.DARK_BLUE}
+            fontSize={30}
+            bold
+            style={{ marginHorizontal: 20 * ratio, marginBottom: 8 * ratio }}>
+            Xin chào,
+          </CText>
           {this.renderCities()}
           {this.renderDatePick()}
           {this.renderChooseOption()}
           {this.state.isRoundTrip && this.renderRoundTrip()}
           {this.renderSearchBtn()}
         </KeyboardAwareScrollView>
-        <Modal visible={this.state.startCalendarVisible} animationType="fade" transparent={true}>
-          <TouchableWithoutFeedback onPress={() => this.setState({ startCalendarVisible: false })}>
+        <Modal
+          visible={this.state.startCalendarVisible}
+          animationType="fade"
+          transparent={true}>
+          <TouchableWithoutFeedback
+            onPress={() => this.setState({ startCalendarVisible: false })}>
             <View style={styles.modalWrap}>
               <View style={styles.modalCalendar}>
                 <CalendarPicker
@@ -283,10 +409,15 @@ class HomeComponent extends React.Component<Props, State> {
                     let m = newDate.getMonth();
                     let y = newDate.getFullYear();
                     let endDate = new Date(y, m, d);
-                    this.setState({ startDatePick: moment(date).format('DD/MM/YYYY'), startCalendarVisible: false, endDate: endDate, endDatePick: moment(endDate).format('DD/MM/YYYY') });
+                    this.setState({
+                      startDatePick: moment(date).format('DD/MM/YYYY'),
+                      startCalendarVisible: false,
+                      endDate: endDate,
+                      endDatePick: moment(endDate).format('DD/MM/YYYY'),
+                    });
                   }}
                   todayBackgroundColor={COLOR.DARK_BLUE}
-                  todayTextStyle={{ color: COLOR.WHITE}}
+                  todayTextStyle={{ color: COLOR.WHITE }}
                   selectedDayColor={COLOR.DARK_BLUE}
                   selectedDayTextColor={COLOR.WHITE}
                   textStyle={{
@@ -294,7 +425,20 @@ class HomeComponent extends React.Component<Props, State> {
                     color: '#000000',
                   }}
                   weekdays={['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']}
-                  months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
+                  months={[
+                    'Tháng 1',
+                    'Tháng 2',
+                    'Tháng 3',
+                    'Tháng 4',
+                    'Tháng 5',
+                    'Tháng 6',
+                    'Tháng 7',
+                    'Tháng 8',
+                    'Tháng 9',
+                    'Tháng 10',
+                    'Tháng 11',
+                    'Tháng 12',
+                  ]}
                   previousTitle="Trước"
                   nextTitle="Sau"
                 />
@@ -302,18 +446,25 @@ class HomeComponent extends React.Component<Props, State> {
             </View>
           </TouchableWithoutFeedback>
         </Modal>
-        <Modal visible={this.state.endCalendarVisible} animationType="fade" transparent={true}>
-          <TouchableWithoutFeedback onPress={() => this.setState({ endCalendarVisible: false })}>
+        <Modal
+          visible={this.state.endCalendarVisible}
+          animationType="fade"
+          transparent={true}>
+          <TouchableWithoutFeedback
+            onPress={() => this.setState({ endCalendarVisible: false })}>
             <View style={styles.modalWrap}>
               <View style={styles.modalCalendar}>
                 <CalendarPicker
                   minDate={this.state.endDate}
                   maxDate={this.maxDate}
                   onDateChange={(date) => {
-                    this.setState({ endDatePick: moment(date).format('DD/MM/YYYY'), endCalendarVisible: false });
+                    this.setState({
+                      endDatePick: moment(date).format('DD/MM/YYYY'),
+                      endCalendarVisible: false,
+                    });
                   }}
                   todayBackgroundColor={COLOR.DARK_BLUE}
-                  todayTextStyle={{ color: COLOR.WHITE}}
+                  todayTextStyle={{ color: COLOR.WHITE }}
                   selectedDayColor={COLOR.DARK_BLUE}
                   selectedDayTextColor={COLOR.WHITE}
                   textStyle={{
@@ -321,7 +472,20 @@ class HomeComponent extends React.Component<Props, State> {
                     color: '#000000',
                   }}
                   weekdays={['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']}
-                  months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
+                  months={[
+                    'Tháng 1',
+                    'Tháng 2',
+                    'Tháng 3',
+                    'Tháng 4',
+                    'Tháng 5',
+                    'Tháng 6',
+                    'Tháng 7',
+                    'Tháng 8',
+                    'Tháng 9',
+                    'Tháng 10',
+                    'Tháng 11',
+                    'Tháng 12',
+                  ]}
                   previousTitle="Trước"
                   nextTitle="Sau"
                 />
@@ -334,10 +498,7 @@ class HomeComponent extends React.Component<Props, State> {
   }
 }
 
-const enhancer = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)
+const enhancer = connect(mapStateToProps, mapDispatchToProps);
 
 const HomeScreen = enhancer(HomeComponent);
 
@@ -354,11 +515,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24 * ratio,
     borderTopLeftRadius: 24 * ratio,
     paddingTop: 20 * ratio,
-
   },
   autocompleteContainer: {
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   citiWrap: {
     backgroundColor: COLOR.WHITE,
@@ -375,17 +535,21 @@ const styles = StyleSheet.create({
     marginHorizontal: 20 * ratio,
     marginTop: 8 * ratio,
     marginBottom: 8 * ratio,
-    padding: 15 * ratio
+    padding: 15 * ratio,
   },
   dropdownWrap: {
     height: 64 * ratio,
     width: '100%',
     fontSize: 18 * ratio,
     borderColor: COLOR.PRIMARY_BLUE,
-    color: COLOR.DARK_BLUE
+    color: COLOR.DARK_BLUE,
   },
   swapIconWrap: {
-    
+    position: 'absolute',
+    right: 32 * ratio,
+    top: 64 * ratio,
+    width: 48 * ratio,
+    height: 48 * ratio,
     backgroundColor: COLOR.WHITE,
     borderRadius: 9 * ratio,
     shadowColor: '#000',
@@ -396,8 +560,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 2 * ratio,
-    height: 38 * ratio,
-    width: 32 * ratio,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -426,7 +588,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16 * ratio,
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   modalWrap: {
     flex: 1,
@@ -462,7 +624,7 @@ const styles = StyleSheet.create({
     marginTop: 16 * ratio,
     marginHorizontal: 20 * ratio,
     height: 60 * ratio,
-    marginBottom: 36 * ratio
+    marginBottom: 36 * ratio,
   },
   roundCityWrap: {
     height: 64 * ratio,
@@ -472,6 +634,6 @@ const styles = StyleSheet.create({
     borderWidth: 1 * ratio,
     borderRadius: 9 * ratio,
     padding: 20 * ratio,
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
