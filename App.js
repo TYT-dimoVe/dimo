@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/reduxs/store';
 import { getCurrentRouteName } from 'utils/function';
-import {  GlobalLoading, GlobalLoadingSetup } from 'components';
+import {  GlobalLoading, GlobalLoadingSetup, GlobalModal, GlobalModalSetup } from 'components';
 
 console.disableYellowBox = true;
 StatusBar.setTranslucent(true);
@@ -71,13 +71,13 @@ class AppComponent extends React.Component {
             </PersistGate>
           </Provider>
           <GlobalLoading ref={(ref) => GlobalLoadingSetup.setLoading(ref)} />
+          <GlobalModal ref={(ref) => GlobalModalSetup.setGlobalModalHolder(ref)} />
       </View>
     );
   }
 }
 
-// const App = codePush(AppComponent);
-const App = AppComponent
+const App = codePush(AppComponent);
 export default App;
 
 const styles = StyleSheet.create({

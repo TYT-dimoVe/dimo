@@ -1,6 +1,4 @@
 export interface searchState {
-  timeStart: string,
-  pickUp: string,
   timeVal: string,
   busOperatorVal: string,
   busTypeVal: string,
@@ -13,5 +11,7 @@ export interface searchState {
   listBusType: any[];
   priceFrom: number;
   priceTo: number;
-  price: number;
+  round1: any[];
+  round2: any[];
+  round: number;
   }

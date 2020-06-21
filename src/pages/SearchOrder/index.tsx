@@ -109,7 +109,7 @@ export class SearchOrderComponent extends React.Component<Props & FormikProps<Fo
             () => { formValid && props.handleSubmit()}
           }
           >
-          <CText bold color={COLOR.WHITE} fontSize={24}>
+          <CText bold color={COLOR.WHITE} fontSize={20}>
             Tìm vé
           </CText>
         </TouchableOpacity>
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     elevation: 2 * ratio,
     marginTop: 16 * ratio,
     marginHorizontal: 20 * ratio,
-    height: 60 * ratio,
+    height: 45 * ratio,
     marginBottom: 36 * ratio,
   },
 });

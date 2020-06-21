@@ -5,11 +5,14 @@ import {createStackNavigator} from 'react-navigation-stack';
 import SplashScreen from 'pages/Splash';
 import HomeScreen from 'pages/Home';
 import SearchTripScreen from 'pages/SearchTrip';
-import FilterScreen from 'pages/Filter';
 import SearchOrderScreen from 'pages/SearchOrder';
 import DetailOrderScreen from 'pages/DetailTicket';
 import ChooseSeatScreen from 'pages/ChooseSeat';
-import TranshipmentScreen from 'pages/Transhipment';
+import FilterScreen from 'pages/SearchTrip/components/filterScreen';
+import TranshipmentScreen from 'pages/ChooseSeat/components/transhipmentScreen';
+import InfomationScreen from 'pages/ChooseSeat/components/infomationScreen';
+import ConfirmScreen from 'pages/ChooseSeat/components/confirmScreen';
+import PaymentScreen from 'pages/ChooseSeat/components/paymentScreen';
 
 const MainStack = createStackNavigator(
   {
@@ -19,7 +22,10 @@ const MainStack = createStackNavigator(
     SearchOrder: { screen: SearchOrderScreen},
     DetailTicket: { screen: DetailOrderScreen },
     ChooseSeat : { screen: ChooseSeatScreen },
-    Transhipment: { screen: TranshipmentScreen}
+    Transhipment: { screen: TranshipmentScreen},
+    Infomation: { screen: InfomationScreen},
+    Confirm: { screen: ConfirmScreen },
+    Payment: { screen: PaymentScreen }
   },
   {
     headerMode: 'null',

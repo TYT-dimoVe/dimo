@@ -1,19 +1,19 @@
 import {CHeader, CText} from 'components';
 import {COLOR, HEADER_TYPE, ratio} from 'config/themeUtils';
+import {searchState} from 'pages/SearchTrip/model';
 import React from 'react';
-import {SafeAreaView, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   FlatList,
-  TouchableWithoutFeedback,
   ScrollView,
+  TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import {NavigationInjectedProps} from 'react-navigation';
 import {connect} from 'react-redux';
 import {PlainAction} from 'redux-typed-actions';
-import {constant} from './constant';
-import {searchState} from 'pages/SearchTrip/model';
 import {convertMoney} from 'utils/function';
-import { SaveSeats } from './redux/actions';
+import {constant} from './constant';
+import {SaveSeats} from './redux/actions';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -23,7 +23,7 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: (action: PlainAction) => void) => {
   return {
-    saveSeat: (val: any) => dispatch(SaveSeats.get(val))
+    saveSeat: (val: any) => dispatch(SaveSeats.get(val)),
   };
 };
 
@@ -57,7 +57,7 @@ export class ChooseSeatComponent extends React.Component<Props, State> {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-around',
-          alignItems: 'center'
+          alignItems: 'center',
         }}>
         {item.length > 0 &&
           item.map((seat: any, index: any) => {
@@ -128,10 +128,14 @@ export class ChooseSeatComponent extends React.Component<Props, State> {
 
   renderSeat = () => {
     return (
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         {this.state.floor1?.length > 0 && (
           <View style={styles.floorWrap} key={'floor1'}>
-            <CText bold color={COLOR.DARK_BLUE} fontSize={16} style={{ alignSelf: 'center'}}>
+            <CText
+              bold
+              color={COLOR.DARK_BLUE}
+              fontSize={16}
+              style={{alignSelf: 'center'}}>
               TẦNG 1
             </CText>
             <FlatList
@@ -149,7 +153,11 @@ export class ChooseSeatComponent extends React.Component<Props, State> {
         )}
         {this.state.floor2?.length > 0 && (
           <View style={styles.floorWrap} key={'floor2'}>
-            <CText bold color={COLOR.DARK_BLUE} fontSize={16} style={{ alignSelf: 'center'}}>
+            <CText
+              bold
+              color={COLOR.DARK_BLUE}
+              fontSize={16}
+              style={{alignSelf: 'center'}}>
               TẦNG 2
             </CText>
             <FlatList
@@ -199,6 +207,10 @@ export class ChooseSeatComponent extends React.Component<Props, State> {
   };
 
   renderInfo = () => {
+    const price =
+      this.props.round === 1
+        ? this.props.round1.price
+        : this.props.round2.price;
     return (
       <View style={{margin: 10 * ratio}}>
         <CText bold fontSize={24} color={COLOR.DARK_BLUE}>
@@ -233,7 +245,7 @@ export class ChooseSeatComponent extends React.Component<Props, State> {
               Tổng tiền
             </CText>
             <CText bold fontSize={16} color={COLOR.RED}>
-              {convertMoney(this.state.seats.length * this.props.price)}
+              {convertMoney(this.state.seats.length * price)}
             </CText>
           </View>
         </View>
@@ -254,19 +266,39 @@ export class ChooseSeatComponent extends React.Component<Props, State> {
                 : COLOR.PRIMARY_ORANGE,
           },
         ]}
-        onPress={() => {
-          const val = {
-            seats: this.state.seats,
-            totalPrice: this.state.seats.length * this.props.price,
-          }
-          this.props.saveSeat(val)
-          this.props.navigation.navigate('Transhipment');
-        }}>
-        <CText bold color={COLOR.WHITE} fontSize={24}>
+        onPress={() => this.saveSeat()}>
+        <CText bold color={COLOR.WHITE} fontSize={20}>
           Tiếp tục
         </CText>
       </TouchableOpacity>
     );
+  };
+
+  saveSeat = () => {
+    const {round} = this.props;
+    const price =
+      round === 1 ? this.props.round1.price : this.props.round2.price;
+    let val = {};
+    if (round === 1) {
+      val = {
+        round: round,
+        seatRound1: {
+          seats: this.state.seats,
+          totalPrice: this.state.seats.length * price,
+        },
+      };
+    } else {
+      val = {
+        round: round,
+        seatRound2: {
+          seats: this.state.seats,
+          totalPrice: this.state.seats.length * price,
+        },
+      };
+    }
+
+    this.props.saveSeat(val);
+    this.props.navigation.navigate('Transhipment');
   };
 
   render() {
@@ -330,7 +362,7 @@ const styles = StyleSheet.create({
     elevation: 2 * ratio,
     marginTop: 16 * ratio,
     marginHorizontal: 20 * ratio,
-    height: 60 * ratio,
+    height: 45 * ratio,
     marginBottom: 36 * ratio,
   },
   separateLine: {

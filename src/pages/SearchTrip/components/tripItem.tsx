@@ -34,7 +34,7 @@ class TripItem extends React.Component<Props, State> {
         return (
             <TouchableOpacity style={styles.container} onPress={() => this.props.onPress(item)}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View>
+                    <View style={{ flex: 0.8}}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <MaterialCommunityIcons name={'bus'} size={20 * ratio} color={COLOR.DARK_BLUE} style={{ marginRight: 5 * ratio }} />
                             <CText bold color={COLOR.PRIMARY_BLUE} fontSize={16}>Nhà xe {item.busOperator}</CText>

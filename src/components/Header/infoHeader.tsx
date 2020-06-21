@@ -35,9 +35,9 @@ class InfoHeader extends React.Component<Props, {}> {
           </TouchableOpacity>
           <View style={{ flex: 0.6, alignItems: 'center', justifyContent: 'center' }}>
             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-              <CText bold color={COLOR.WHITE} fontSize={24}>{this.props.pickup}</CText>
+              <CText bold color={COLOR.WHITE} fontSize={20}>{this.props.pickup}</CText>
               <Feather name={'arrow-right'} color={COLOR.WHITE} size={24 * ratio} />
-              <CText bold color={COLOR.WHITE} fontSize={24}>{this.props.dropdown}</CText>
+              <CText bold color={COLOR.WHITE} fontSize={20}>{this.props.dropdown}</CText>
             </View>
             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
               <TouchableOpacity onPress={this.props.onLeftPress}>

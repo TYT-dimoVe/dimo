@@ -1,6 +1,6 @@
 import { PlainAction } from 'redux-typed-actions';
 import { homeState } from 'pages/Home/model';
-import { GetCitiesSuccess, SearchTripsSuccess, SaveRoundTrip, LoadMoreTripsSuccess, FilterTripsSuccess } from 'pages/Home/redux/actions';
+import { GetCitiesSuccess, SearchTripsSuccess, SaveRoundTrip, LoadMoreTripsSuccess, FilterTripsSuccess, ResetFilter } from 'pages/Home/redux/actions';
 
 const initialState: homeState = {
   cities: [],
@@ -15,6 +15,7 @@ const initialState: homeState = {
   pickUpCity: '',
   dropDownCity: '',
   isFilter: false,
+  round1Date: '',
 };
 
 export function homeReducer(state: homeState = initialState, action: PlainAction) {
@@ -30,6 +31,7 @@ export function homeReducer(state: homeState = initialState, action: PlainAction
         searchData: action.payload.data,
         total: action.payload.totalItems,
         date: action.payload.date,
+        round1Date: action.payload.round1Date || state.round1Date
       }
     case SaveRoundTrip.type:
       return {
@@ -39,7 +41,8 @@ export function homeReducer(state: homeState = initialState, action: PlainAction
         dropDownCode: action.payload.dropDownCode,
         roundTripDate: action.payload.roundTripDate,
         pickUpCity: action.payload.pickUpCity,
-        dropDownCity: action.payload.dropDownCity
+        dropDownCity: action.payload.dropDownCity,
+        round1Date: action.payload.round1Date,
       }
     case LoadMoreTripsSuccess.type:
       return {
@@ -55,6 +58,11 @@ export function homeReducer(state: homeState = initialState, action: PlainAction
           searchData: action.payload.result.data,
           total: action.payload.result.totalItems,
           isFilter: action.payload.isFilter,
+        }
+      case ResetFilter.type:
+        return {
+          ...state,
+          isFilter: false,
         }
     default:
       return state;

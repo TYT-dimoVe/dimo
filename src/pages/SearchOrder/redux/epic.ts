@@ -9,7 +9,7 @@ import {
   GetSeatSuccess,
   GetSeatFailed,
 } from 'pages/SearchOrder/redux/actions';
-import {GlobalLoadingSetup} from 'components';
+import {GlobalLoadingSetup, GlobalModalSetup} from 'components';
 import {exhaustMap, catchError, map} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {StackActions, NavigationActions} from 'react-navigation';
@@ -20,6 +20,7 @@ const searchOrder$ = (action$: Observable<PlainAction>) =>
   action$.pipe(
     ofType(SearchOrder.type),
     exhaustMap((action: any) => {
+      GlobalLoadingSetup.getLoading().isVisible();
       return request<any>({
         method: 'POST',
         url: 'findTickets',
@@ -29,12 +30,22 @@ const searchOrder$ = (action$: Observable<PlainAction>) =>
         },
       }).pipe(
         map((value) => {
-          if ((value as any).result && (value as any).result.length > 0) {
-            return SearchOrderSuccess.get((value as any).result[0]);
+          GlobalLoadingSetup.getLoading().isHide();
+          if ((value as any).result) {
+            return SearchOrderSuccess.get((value as any).result);
           }
+          GlobalModalSetup.getGlobalModalHolder().alertMessage(
+            'empty',
+            'Không tìm thấy đơn hàng phù hợp.',
+          );
           return SearchOrderFailed.get();
         }),
         catchError((error) => {
+          GlobalLoadingSetup.getLoading().isHide();
+          GlobalModalSetup.getGlobalModalHolder().alertMessage(
+            'empty',
+            'Không tìm thấy đơn hàng phù hợp.',
+          );
           return of(SearchOrderFailed.get(error));
         }),
       );

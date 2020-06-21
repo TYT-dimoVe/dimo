@@ -17,3 +17,5 @@ export const SaveRoundTrip = defineAction<any>('SAVE_ROUND_TRIPS');
 export const FilterTrips = defineAction<any>('FILTER_TRIPS');
 export const FilterTripsSuccess = defineAction<any>('FILTER_TRIPS_SUCCESS');
 export const FilterTripsFailed = defineAction<any>('FILTER_TRIPS_FAILED');
+
+export const ResetFilter = defineAction<any>('RESET_FILTER')

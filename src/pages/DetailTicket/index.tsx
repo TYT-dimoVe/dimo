@@ -66,7 +66,8 @@ export class DetailOrderComponent extends React.Component<Props, State> {
             {order?.phoneNumber}
           </CText>
         </View>
-        <View style={styles.infoWrap}>
+        { order?.customerEmail && (
+          <View style={styles.infoWrap}>
           <CText bold color={COLOR.DARK_BLUE} fontSize={16}>
             Email
           </CText>
@@ -74,6 +75,8 @@ export class DetailOrderComponent extends React.Component<Props, State> {
             {order?.customerEmail}
           </CText>
         </View>
+        )}
+        
       </View>
     );
   };
@@ -108,18 +111,10 @@ export class DetailOrderComponent extends React.Component<Props, State> {
         </View>
         <View style={styles.infoWrap}>
           <CText bold color={COLOR.DARK_BLUE} fontSize={16}>
-            Địa điểm khởi hành
-          </CText>
-          <CText bold color={COLOR.PRIMARY_ORANGE} fontSize={16}>
-            {order?.customerEmail}
-          </CText>
-        </View>
-        <View style={styles.infoWrap}>
-          <CText bold color={COLOR.DARK_BLUE} fontSize={16}>
             Thời gian khởi hành
           </CText>
           <CText bold color={COLOR.PRIMARY_ORANGE} fontSize={16}>
-            {moment(order?.departureDay).format('DD/MM/YYYY HH:mm')}
+            {order?.departureDay}
           </CText>
         </View>
         <View style={styles.infoWrap}>
@@ -222,7 +217,7 @@ const styles = StyleSheet.create({
     elevation: 2 * ratio,
     marginTop: 16 * ratio,
     marginHorizontal: 20 * ratio,
-    height: 60 * ratio,
+    height: 45 * ratio,
     marginBottom: 36 * ratio,
   },
   separateLine: {

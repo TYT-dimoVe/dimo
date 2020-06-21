@@ -1,50 +1,50 @@
-import { Observable } from 'redux';
-import { PlainAction } from 'redux-typed-actions';
-import { ofType, combineEpics } from 'redux-observable';
-import { SearchOrder, SearchOrderSuccess, SearchOrderFailed } from 'pages/SearchOrder/redux/actions';
 import { GlobalLoadingSetup } from 'components';
-import { exhaustMap, catchError, map } from 'rxjs/operators';
+import { Observable } from 'redux';
+import { combineEpics, ofType } from 'redux-observable';
+import { PlainAction } from 'redux-typed-actions';
 import { of } from 'rxjs';
-import { StackActions, NavigationActions } from 'react-navigation';
-import { store } from '../../../reduxs/store';
+import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { request } from 'utils/network/api';
+import { GetPaymentMethod, GetPaymentMethodFailed, GetPaymentMethodSuccess } from './actions';
+import { store } from '../../../reduxs/store';
+import { NavigationActions } from 'react-navigation';
 
-  const searchOrder$ = (action$: Observable<PlainAction>) =>
+  const getPaymentMethod$ = (action$: Observable<PlainAction>) =>
   action$.pipe( 
-    ofType(SearchOrder.type),
+    ofType(GetPaymentMethod.type),
     exhaustMap((action: any) => {
+      GlobalLoadingSetup.getLoading().isVisible();
       return request<any>({
-        method: 'POST',
-        url: 'findTickets',
-        param: action.payload,
-        option: {
-          format: 'json',
-        },
+        method: 'GET',
+        url: 'paymentMethod',
       }).pipe(
         map((value) => {
+          GlobalLoadingSetup.getLoading().isHide();
           if ((value as any).result && (value as any).result.length > 0) {
-            return SearchOrderSuccess.get((value as any).result[0]);
+            return GetPaymentMethodSuccess.get((value as any));
           }
-          return SearchOrderFailed.get();
+          return GetPaymentMethodFailed.get();
         }),
         catchError((error) => {
-          return of(SearchOrderFailed.get(error));
+          GlobalLoadingSetup.getLoading().isHide();
+          return of(GetPaymentMethodFailed.get(error));
         }),
       );
     }),
   );
 
-  const searchOrderSuccess$ = (action$: Observable<PlainAction>) =>
+  const getPaymentMethodSuccess$ = (action$: Observable<PlainAction>) =>
   action$.pipe(
-    ofType(SearchOrderSuccess.type),
+    ofType(GetPaymentMethodSuccess.type),
     map((action: any) => {
       return store.dispatch(
         NavigationActions.navigate({
-          routeName: 'DetailTicket',
-          params: {}
+          routeName: 'Payment',
+          params: { }
         }),
       );
     }),
   );
 
-export const searchOrderEpics = combineEpics(searchOrder$, searchOrderSuccess$);
+
+export const seatEpics = combineEpics(getPaymentMethod$, getPaymentMethodSuccess$);

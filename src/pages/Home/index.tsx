@@ -1,25 +1,25 @@
+import { CHeader, Check, CText, Dropdown, GlobalModalSetup } from 'components';
+import { COLOR, HEADER_TYPE, ratio } from 'config/themeUtils';
+import moment from 'moment';
 import React from 'react';
 import {
-  SafeAreaView,
+  Modal, SafeAreaView,
   StyleSheet,
-  View,
-  Text,
+
+
   TouchableOpacity,
-  Modal,
-  TouchableWithoutFeedback,
+
+  TouchableWithoutFeedback, View
 } from 'react-native';
+import CalendarPicker from 'react-native-calendar-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { PlainAction } from 'redux-typed-actions';
 import { constant } from './constant';
-import { HEADER_TYPE, ratio, COLOR } from 'config/themeUtils';
-import { CHeader, CText, Dropdown, Check } from 'components';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { GetCities, SearchTrips, SaveRoundTrip } from './redux/actions';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import CalendarPicker from 'react-native-calendar-picker';
-import moment from 'moment';
+import { GetCities, SaveRoundTrip, SearchTrips } from './redux/actions';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -326,7 +326,7 @@ class HomeComponent extends React.Component<Props, State> {
         <TouchableOpacity
           disabled={true}
           style={[styles.btnWrap, { backgroundColor: COLOR.DEACTIVE_GRAY }]}>
-          <CText bold color={COLOR.WHITE} fontSize={24}>
+          <CText bold color={COLOR.WHITE} fontSize={20}>
             Tìm chuyến
           </CText>
         </TouchableOpacity>
@@ -336,7 +336,7 @@ class HomeComponent extends React.Component<Props, State> {
         <TouchableOpacity
           style={styles.btnWrap}
           onPress={() => this.searchTrips()}>
-          <CText bold color={COLOR.WHITE} fontSize={24}>
+          <CText bold color={COLOR.WHITE} fontSize={20}>
             Tìm chuyến
           </CText>
         </TouchableOpacity>
@@ -350,6 +350,7 @@ class HomeComponent extends React.Component<Props, State> {
       to: this.state.dropdownCode,
       date: this.state.startDatePick,
       page: 1,
+      round: 1,
     };
 
     const saveRoundTrip = {
@@ -359,6 +360,7 @@ class HomeComponent extends React.Component<Props, State> {
       dropDownCode: this.state.dropdownCode,
       pickUpCity: this.state.pickUpCity,
       dropDownCity: this.state.dropdownCity,
+      round1Date: this.state.startDatePick,
     };
 
     this.props.searchTrips(searchVal);
@@ -623,7 +625,7 @@ const styles = StyleSheet.create({
     elevation: 2 * ratio,
     marginTop: 16 * ratio,
     marginHorizontal: 20 * ratio,
-    height: 60 * ratio,
+    height: 45 * ratio,
     marginBottom: 36 * ratio,
   },
   roundCityWrap: {

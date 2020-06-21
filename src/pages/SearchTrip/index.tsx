@@ -1,24 +1,28 @@
-import { CHeader, CText } from 'components';
-import { COLOR, HEADER_TYPE, ratio } from 'config/themeUtils';
+import {CHeader, CText} from 'components';
+import {COLOR, HEADER_TYPE, ratio} from 'config/themeUtils';
 import moment from 'moment';
-import { homeState } from 'pages/Home/model';
-import { SearchTrips, LoadMoreTrips } from 'pages/Home/redux/actions';
+import {homeState} from 'pages/Home/model';
+import {
+  LoadMoreTrips,
+  ResetFilter,
+  SearchTrips,
+} from 'pages/Home/redux/actions';
 import React from 'react';
 import {
   FlatList,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { NavigationInjectedProps } from 'react-navigation';
-import { connect } from 'react-redux';
-import { PlainAction } from 'redux-typed-actions';
+import {NavigationInjectedProps} from 'react-navigation';
+import {connect} from 'react-redux';
+import {PlainAction} from 'redux-typed-actions';
 import TripItem from './components/tripItem';
-import { constant } from './constant';
-import { GetFilter, GetSeat } from './redux/actions';
+import {constant} from './constant';
+import {GetFilter, GetSeat} from './redux/actions';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -31,7 +35,8 @@ const mapDispatchToProps = (dispatch: (action: PlainAction) => void) => {
     searchTrips: (val: any) => dispatch(SearchTrips.get(val)),
     getFilter: (val: any) => dispatch(GetFilter.get(val)),
     getSeat: (val: any) => dispatch(GetSeat.get(val)),
-    loadMoreTrips: (val: any) => dispatch(LoadMoreTrips.get(val))
+    loadMoreTrips: (val: any) => dispatch(LoadMoreTrips.get(val)),
+    resetFilter: (val: any) => dispatch(ResetFilter.get(val)),
   };
 };
 
@@ -42,6 +47,7 @@ export interface Props extends NavigationInjectedProps, homeState {
   getFilter: (val: any) => void;
   getSeat: (val: any) => void;
   loadMoreTrips: (val: any) => void;
+  resetFilter: (val: any) => void;
 }
 
 interface State {
@@ -77,68 +83,115 @@ class SearchTripsComponent extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.resetFilter();
+  }
+
+  resetFilter = () => {
+    const val = {
+      isFilter: false,
+    };
+    this.props.resetFilter(val);
+  };
 
   renderItem = ({item}: any) => {
-    return <TripItem item={item} onPress={(item) => {this.getSeat(item)}}/>;
+    return (
+      <TripItem
+        item={item}
+        onPress={(item) => {
+          this.getSeat(item);
+        }}
+      />
+    );
   };
 
   getSeat = (item: any) => {
-    const val = {
-    busType: item.busType,
-    tripId: item.tripId,
-    date: this.props.date,
-    pickUp: item.pickUp,
-    timeStart: item.timeStart,
-    price: item.price,
+    const round = this.props.navigation.getParam('round') || 1;
+    let val = {};
+    if (round === 1) {
+      val = {
+        round: 1,
+        round1: {
+          busType: item.busType,
+          tripId: item.tripId,
+          date: this.props.date,
+          pickUp: item.pickUp,
+          timeStart: item.timeStart,
+          price: item.price,
+          busOperator: item.busOperator,
+          busOperatorId: item.busOperatorId,
+        },
+      };
+    } else {
+      val = {
+        round: 2,
+        round2: {
+          busType: item.busType,
+          tripId: item.tripId,
+          date: this.props.date,
+          pickUp: item.pickUp,
+          timeStart: item.timeStart,
+          price: item.price,
+          busOperator: item.busOperator,
+          busOperatorId: item.busOperatorId,
+        },
+      };
     }
-    this.props.getSeat(val)
-  }
+
+    this.props.getSeat(val);
+  };
 
   getFilter = () => {
+    const round = this.props.navigation.getParam('round') || 1;
     const val = {
-      from: this.props.pickUpCode,
-      to: this.props.dropDownCode,
+      from: round === 1 ? this.props.pickUpCode : this.props.dropDownCode,
+      to: round === 1 ? this.props.dropDownCode : this.props.pickUpCode,
     };
     this.props.getFilter(val);
   };
 
   searchTrips = (date: string) => {
+    const round = this.props.navigation.getParam('round') || 1;
     const searchVal = {
-      from: this.props.pickUpCode,
-      to: this.props.dropDownCode,
+      from: round === 1 ? this.props.pickUpCode : this.props.dropDownCode,
+      to: round === 1 ? this.props.dropDownCode : this.props.pickUpCode,
       date: date,
       page: 1,
+      round: round,
     };
 
     this.props.searchTrips(searchVal);
   };
 
   loadMoreTrips = () => {
+    const round = this.props.navigation.getParam('round') || 1;
     const searchVal = {
-      from: this.props.pickUpCode,
-      to: this.props.dropDownCode,
+      from: round === 1 ? this.props.pickUpCode : this.props.dropDownCode,
+      to: round === 1 ? this.props.dropDownCode : this.props.pickUpCode,
       date: this.props.date,
       page: this.props.page + 1,
     };
 
     this.props.loadMoreTrips(searchVal);
-  }
+  };
 
   render() {
+    const round = this.props.navigation.getParam('round') || 1;
     return (
       <SafeAreaView style={styles.container}>
         <CHeader
           type={HEADER_TYPE.INFO}
-          pickup={this.props.pickUpCity}
-          dropdown={this.props.dropDownCity}
+          pickup={round === 1 ? this.props.pickUpCity : this.props.dropDownCity}
+          dropdown={
+            round === 1 ? this.props.dropDownCity : this.props.pickUpCity
+          }
           headerSubtitle={this.props.date}
           onBack={() => this.props.navigation.goBack()}
           onLeftPress={() => {
             const previousDate = moment(moment(this.props.date, 'DD/MM/YYYY'))
               .add(-1, 'days')
               .format('DD/MM/YYYY');
-            moment(previousDate, 'DD/MM/YYYY') < moment()
+            moment(previousDate, 'DD/MM/YYYY') < moment() || round === 2 && moment(previousDate, 'DD/MM/YYYY') <= moment(moment(this.props.round1Date, 'DD/MM/YYYY'))
               ? console.info('false')
               : this.searchTrips(previousDate);
           }}
@@ -146,7 +199,7 @@ class SearchTripsComponent extends React.Component<Props, State> {
             const nextDate = moment(moment(this.props.date, 'DD/MM/YYYY'))
               .add(1, 'days')
               .format('DD/MM/YYYY');
-            moment(nextDate, 'DD/MM/YYYY') > moment(this.maxDate)
+            moment(nextDate, 'DD/MM/YYYY') > moment(this.maxDate) || this.props.isRoundTrip && round === 1 && moment(nextDate, 'DD/MM/YYYY') >= moment(moment(this.props.roundTripDate, 'DD/MM/YYYY'))
               ? console.info('false')
               : this.searchTrips(nextDate);
           }}
@@ -177,7 +230,9 @@ class SearchTripsComponent extends React.Component<Props, State> {
             renderItem={this.renderItem}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
-            onEndReached={() => { this.props.isFilter === false && this.loadMoreTrips() }}
+            onEndReached={() => {
+              this.props.isFilter === false && this.loadMoreTrips();
+            }}
           />
         </View>
       </SafeAreaView>

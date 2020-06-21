@@ -26,7 +26,7 @@ class NormalHeader extends React.Component<Props, {}> {
               <Feather name={'chevron-left'} color={COLOR.WHITE} size={24 * ratio}/>
           </TouchableOpacity>
           <View style={{ flex: 0.6, alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}}>
-            <CText bold color={COLOR.WHITE} fontSize={24}>{this.props.headerTitle}</CText>
+            <CText bold color={COLOR.WHITE} fontSize={20}>{this.props.headerTitle}</CText>
           </View>
           <View style={styles.iconContainer}>
           </View>

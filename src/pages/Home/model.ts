@@ -11,4 +11,5 @@ export interface homeState {
     pickUpCity: string,
     dropDownCity: string,
     isFilter: boolean,
+    round1Date: string,
   }

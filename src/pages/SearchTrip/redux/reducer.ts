@@ -2,10 +2,9 @@ import { PlainAction } from 'redux-typed-actions';
 import { searchState } from 'pages/SearchTrip/model';
 import { GetFilterSuccess, GetSeatSuccess } from './actions';
 import { FilterTripsSuccess } from 'pages/Home/redux/actions';
+import { number } from 'yup';
 
 const initialState: searchState = {
-  timeStart: '',
-  pickUp: '',
   timeVal: '',
   busOperatorVal: '',
   busTypeVal: '',
@@ -18,7 +17,9 @@ const initialState: searchState = {
   listBusType: [],
   priceFrom: 0,
   priceTo: 0,
-  price: 0,
+  round1: [],
+  round2: [],
+  round: 1,
 };
 
 export function searchReducer(state: searchState = initialState, action: PlainAction) {
@@ -37,9 +38,9 @@ export function searchReducer(state: searchState = initialState, action: PlainAc
           floor2: action.payload.result.floor2,
           column: action.payload.result.column,
           row: action.payload.result.row,
-          timeStart: action.payload.timeStart,
-          pickUp: action.payload.pickUp,
-          price: action.payload.price,
+          round1: action.payload.round1 || state.round1,
+          round2: action.payload.round2 || state.round2,
+          round: action.payload.round,
         }
         case FilterTripsSuccess.type:
           return {

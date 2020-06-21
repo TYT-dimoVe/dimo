@@ -16,7 +16,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import {NavigationInjectedProps} from 'react-navigation';
 import {connect} from 'react-redux';
 import {PlainAction} from 'redux-typed-actions';
-import {constant} from './constant';
+import {constant} from '../constant';
 import { FilterTrips } from 'pages/Home/redux/actions';
 
 const mapStateToProps = (state: any) => {
@@ -318,7 +318,7 @@ class FilterComponent extends React.Component<Props, State> {
           onPress={() => {
             this.resetFilter();
           }}>
-          <CText bold color={COLOR.WHITE} fontSize={24}>
+          <CText bold color={COLOR.WHITE} fontSize={20}>
             Cài lại
           </CText>
         </TouchableOpacity>
@@ -333,7 +333,7 @@ class FilterComponent extends React.Component<Props, State> {
             },
           ]}
           onPress={() => this.SearchFilter()}>
-          <CText bold color={COLOR.WHITE} fontSize={24}>
+          <CText bold color={COLOR.WHITE} fontSize={20}>
             Lọc
           </CText>
         </TouchableOpacity>
@@ -342,6 +342,7 @@ class FilterComponent extends React.Component<Props, State> {
   };
 
   resetFilter = () => {
+    const round = this.props.navigation.getParam('round') || 1;
     this.setState({
       chooseTime: '',
       chooseBusOperator: '',
@@ -350,8 +351,8 @@ class FilterComponent extends React.Component<Props, State> {
       priceTo: 0,
     });
     const val = {
-      from: this.props.pickUpCode,
-      to: this.props.dropDownCode,
+      from: round === 1 ? this.props.pickUpCode : this.props.dropDownCode,
+      to: round === 1 ? this.props.dropDownCode : this.props.pickUpCode,
       timeStart: '',
       busOperatorId: '',
       busType: '',
@@ -361,9 +362,10 @@ class FilterComponent extends React.Component<Props, State> {
   };
 
   SearchFilter = () => {
+    const round = this.props.navigation.getParam('round') || 1;
     const val = {
-      from: this.props.pickUpCode,
-      to: this.props.dropDownCode,
+      from: round === 1 ? this.props.pickUpCode : this.props.dropDownCode,
+      to: round === 1 ? this.props.dropDownCode : this.props.pickUpCode,
       priceFrom:
         this.state.priceFrom > 0 &&
         this.state.priceFrom < this.state.priceTo &&
@@ -455,7 +457,7 @@ const styles = StyleSheet.create({
     elevation: 2 * ratio,
     marginTop: 16 * ratio,
     marginHorizontal: 20 * ratio,
-    height: 60 * ratio,
+    height: 45 * ratio,
     marginBottom: 36 * ratio,
   },
 });
