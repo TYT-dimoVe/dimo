@@ -9,6 +9,10 @@ module.exports = {
           pages: './src/pages',
           core: './src/core',
           assets: './src/assets',
+          navigators: './src/navigators',
+          utils: './src/utils',
+          components: './src/components',
+          config: './src/config',
         },
       },
     ]
