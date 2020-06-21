@@ -42,7 +42,7 @@ const AppRouteConfigs = createStackNavigator(
     
   },
   {
-    initialRouteName: 'Main',
+    initialRouteName: 'Splash',
     headerMode: 'none',
   },
 );
