@@ -3,7 +3,7 @@ import { COLOR, HEADER_TYPE, ratio } from 'config/themeUtils';
 import { seatsState } from 'pages/ChooseSeat/model';
 import { homeState } from 'pages/Home/model';
 import { searchState } from 'pages/SearchTrip/model';
-import { SubmitTicket } from 'pages/SearchTrip/redux/actions';
+import { SubmitTicket, Submit2Ticket } from 'pages/SearchTrip/redux/actions';
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -23,6 +23,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: (action: PlainAction) => void) => {
   return {
     submitTicket: (val: any) => dispatch(SubmitTicket.get(val)),
+    submit2Ticket: (val: any) => dispatch(Submit2Ticket.get(val)),
   };
 };
 
@@ -33,6 +34,7 @@ interface Props
     homeState {
   getPaymentMethod: () => void;
   submitTicket: (val: any) => void;
+  submit2Ticket: (val: any) => void;
 }
 
 interface State {
@@ -77,33 +79,29 @@ export class PaymentComponent extends React.Component<Props, State> {
 
   submitPayment = () => {
     if (this.props.isRoundTrip === true) {
-      const val1 = {
-        pay: {
-          tripId: this.props.round1.tripId,
-          totalPrice: this.props.seatRound1.totalPrice,
-          busType: this.props.round1.busType,
-          departureDay: this.props.round1.date,
-          busOperator: this.props.round1.busOperator,
-          busOperatorId: this.props.round1.busOperatorId,
-          totalTicketAmount: this.props.seatRound1.seats?.length,
-          seatId: this.props.seatRound1.seats,
-          customerName: this.props.customerInfo.customerName,
-          phoneNumber: this.props.customerInfo.phoneNumber,
-          identityId: this.props.customerInfo.identityId,
-          paymentCode: this.state.chooseMethod,
-          paymentTitle: this.state.methodTitle,
-          paymentStatus:
-            this.state.chooseMethod === 'DIRECT' ||
-            this.state.chooseMethod === 'BANK_TRANSFER'
-              ? false
-              : true,
-        },
-        isShowModal: false,
-      };
-      this.props.submitTicket(val1);
-      const val2 = {
-        pay: {
-          tripId: this.props.round1.tripId,
+      const pay1 = {
+        tripId: this.props.round1.tripId,
+        totalPrice: this.props.seatRound1.totalPrice,
+        busType: this.props.round1.busType,
+        departureDay: this.props.round1.date,
+        busOperator: this.props.round1.busOperator,
+        busOperatorId: this.props.round1.busOperatorId,
+        totalTicketAmount: this.props.seatRound1.seats?.length,
+        seatId: this.props.seatRound1.seats,
+        customerName: this.props.customerInfo.customerName,
+        phoneNumber: this.props.customerInfo.phoneNumber,
+        identityId: this.props.customerInfo.identityId,
+        customerEmail: this.props.customerInfo.customerEmail || '',
+        paymentCode: this.state.chooseMethod,
+        paymentTitle: this.state.methodTitle,
+        paymentStatus:
+          this.state.chooseMethod === 'DIRECT' ||
+          this.state.chooseMethod === 'BANK_TRANSFER'
+            ? false
+            : true,
+      }
+      const pay2 = {
+        tripId: this.props.round1.tripId,
           totalPrice: this.props.seatRound2.totalPrice,
           busType: this.props.round2.busType,
           departureDay: this.props.round2.date,
@@ -114,6 +112,7 @@ export class PaymentComponent extends React.Component<Props, State> {
           customerName: this.props.customerInfo.customerName,
           phoneNumber: this.props.customerInfo.phoneNumber,
           identityId: this.props.customerInfo.identityId,
+          customerEmail: this.props.customerInfo.customerEmail || '',
           paymentCode: this.state.chooseMethod,
           paymentTitle: this.state.methodTitle,
           paymentStatus:
@@ -121,10 +120,13 @@ export class PaymentComponent extends React.Component<Props, State> {
             this.state.chooseMethod === 'BANK_TRANSFER'
               ? false
               : true,
-        },
+      }
+      const val = {
+        pay1,
+        pay2,
         isShowModal: true,
       };
-      this.props.submitTicket(val2);
+      this.props.submit2Ticket(val);
     } else {
       const val = {
         pay: {

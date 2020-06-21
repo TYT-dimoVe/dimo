@@ -70,7 +70,7 @@ class ModalScreen extends React.Component<Props, State> {
             source={require('assets/success.json')}
             autoPlay
             loop
-            style={{width: 78 * ratio, height: 78 * ratio}}
+            style={{width: 68 * ratio, height: 68 * ratio}}
             resizeMode={'contain'}
         />
       )

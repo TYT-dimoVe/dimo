@@ -1,7 +1,7 @@
 import { Observable } from 'redux';
 import { PlainAction } from 'redux-typed-actions';
 import { ofType, combineEpics } from 'redux-observable';
-import { GetFilter, GetFilterFailed, GetFilterSuccess, GetSeatSuccess, GetSeatFailed, GetSeat, SubmitTicket, SubmitTicketSuccess, SubmitTicketFailed} from 'pages/SearchTrip/redux/actions';
+import { GetFilter, GetFilterFailed, GetFilterSuccess, GetSeatSuccess, GetSeatFailed, GetSeat, SubmitTicket, SubmitTicketSuccess, SubmitTicketFailed, SubmitTicketSuccessNotBack, Submit2Ticket, Submit2TicketFailed} from 'pages/SearchTrip/redux/actions';
 import { GlobalLoadingSetup, GlobalModalSetup } from 'components';
 import { exhaustMap, catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -95,6 +95,50 @@ action$.pipe(
   }),
 );
 
+const submit2Ticket$ = (action$: Observable<PlainAction>) =>
+action$.pipe( 
+  ofType(Submit2Ticket.type),
+  exhaustMap((action: any) => {
+    return request<any>({
+      method: 'POST',
+      url: 'submitTicket',
+      param: action.payload.pay1,
+      option: {
+        format: 'json',
+      },
+    }).pipe(
+      map((value) => {
+        if ((value as any).result) {
+          const val = {
+            pay: action.payload.pay2
+          }
+          return SubmitTicketSuccessNotBack.get(val);
+        }
+        GlobalModalSetup.getGlobalModalHolder().alertMessage(
+          'error',
+          'Thanh toán đơn hàng thất bại. Vui lòng thử lại sau.',
+        );
+        return Submit2TicketFailed.get();
+      }),
+      catchError((error) => {
+        GlobalModalSetup.getGlobalModalHolder().alertMessage(
+          'error',
+          'Thanh toán đơn hàng thất bại. Vui lòng thử lại sau.',
+        );
+        return of(Submit2TicketFailed.get(error));
+      }),
+    );
+  }),
+);
+
+const submitNotBackSuccess$ = (action$: Observable<PlainAction>) =>
+action$.pipe(
+  ofType(SubmitTicketSuccessNotBack.type),
+  map((action: any) => {
+    return SubmitTicket.get(action.payload)
+  }),
+);
+
 const submitTicket$ = (action$: Observable<PlainAction>) =>
 action$.pipe( 
   ofType(SubmitTicket.type),
@@ -103,7 +147,7 @@ action$.pipe(
     console.info(action.payload.pay)
     return request<any>({
       method: 'POST',
-      url: 'getSeat',
+      url: 'submitTicket',
       param: action.payload.pay,
       option: {
         format: 'json',
@@ -112,7 +156,6 @@ action$.pipe(
       map((value) => {
         GlobalLoadingSetup.getLoading().isHide();
         if ((value as any).result) {
-          if (action.payload.isShowModal === true) {
             if (action.payload.paymentCode === 'DIRECT' || action.payload.paymentCode === 'BANK_TRANSFER') {
               GlobalModalSetup.getGlobalModalHolder().alertMessage(
                 'success',
@@ -124,8 +167,7 @@ action$.pipe(
                 'Thanh toán đơn hàng thành công! Vui lòng kiểm tra email và tin nhắn để xem thông tin vé.',
               );
             }
-          }
-          return SubmitTicketSuccess.get((value as any).result);
+            return SubmitTicketSuccess.get((value as any).result);
         }
         GlobalModalSetup.getGlobalModalHolder().alertMessage(
           'error',
@@ -145,9 +187,11 @@ action$.pipe(
   }),
 );
 
+
+
 const finishSubmit$ = (action$: Observable<PlainAction>) =>
 action$.pipe(
-  ofType(SubmitTicketSuccess.type, SubmitTicketFailed.type),
+  ofType(SubmitTicketSuccess.type, SubmitTicketFailed.type, Submit2TicketFailed.type),
   map((action: any) => {
     const resetAction = StackActions.reset({
       index: 0,
@@ -157,4 +201,4 @@ action$.pipe(
   }),
 );
 
-export const searchEpics = combineEpics(getFilter$, getFilterSuccess$, getSeats$ , getSeatsSuccess$, submitTicket$, finishSubmit$);
+export const searchEpics = combineEpics(getFilter$, getFilterSuccess$, getSeats$ , getSeatsSuccess$, submitTicket$, finishSubmit$, submit2Ticket$, submitNotBackSuccess$);
