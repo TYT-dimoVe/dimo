@@ -25,7 +25,7 @@ class AppComponent extends React.Component {
   componentWillMount() {
     this.backHandler();
     codePush.sync({
-      updateDialog: false,
+      updateDialog: true,
       installMode: codePush.InstallMode.IMMEDIATE,
     });
   }
