@@ -14,4 +14,6 @@ export interface searchState {
   round1: any[];
   round2: any[];
   round: number;
+  promotePercent: number;
+  isDisableBtn: boolean;
   }

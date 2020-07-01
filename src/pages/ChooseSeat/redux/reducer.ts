@@ -1,6 +1,7 @@
 import { seatsState } from 'pages/ChooseSeat/model';
 import { PlainAction } from 'redux-typed-actions';
 import { SaveCustomerInfo, SaveSeats, UpdateTranship, GetPaymentMethodSuccess } from './actions';
+import { number } from 'yup';
 
 const initialState: seatsState = {
   round: 1,
@@ -9,7 +10,7 @@ const initialState: seatsState = {
   seatRound1: [],
   seatRound2: [],
   customerInfo: [],
-  paymentMethod: []
+  paymentMethod: [],
 };
 
 export function seatsReducer(state: seatsState = initialState, action: PlainAction) {

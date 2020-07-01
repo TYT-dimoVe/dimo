@@ -1,13 +1,13 @@
-import { Observable } from 'redux';
-import { PlainAction } from 'redux-typed-actions';
-import { ofType, combineEpics } from 'redux-observable';
-import { GetFilter, GetFilterFailed, GetFilterSuccess, GetSeatSuccess, GetSeatFailed, GetSeat, SubmitTicket, SubmitTicketSuccess, SubmitTicketFailed} from 'pages/SearchTrip/redux/actions';
 import { GlobalLoadingSetup, GlobalModalSetup } from 'components';
-import { exhaustMap, catchError, map } from 'rxjs/operators';
+import { GetFilter, GetFilterFailed, GetFilterSuccess, GetSeat, GetSeatFailed, GetSeatSuccess, Submit2Ticket, Submit2TicketFailed, Submit2TicketSuccess, SubmitPromoteCode, SubmitPromoteCodeFailed, SubmitPromoteCodeSuccess, SubmitTicket, SubmitTicketFailed, SubmitTicketSuccess } from 'pages/SearchTrip/redux/actions';
+import { NavigationActions, StackActions } from 'react-navigation';
+import { Observable } from 'redux';
+import { combineEpics, ofType } from 'redux-observable';
+import { PlainAction } from 'redux-typed-actions';
 import { of } from 'rxjs';
-import { StackActions, NavigationActions } from 'react-navigation';
-import { store } from '../../../reduxs/store';
+import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { request } from 'utils/network/api';
+import { store } from '../../../reduxs/store';
 
 const getFilter$ = (action$: Observable<PlainAction>) =>
 action$.pipe(
@@ -95,15 +95,60 @@ action$.pipe(
   }),
 );
 
+const submit2Ticket$ = (action$: Observable<PlainAction>) =>
+action$.pipe( 
+  ofType(Submit2Ticket.type),
+  exhaustMap((action: any) => {
+    return request<any>({
+      method: 'POST',
+      url: 'submitTickets',
+      param: action.payload,
+      option: {
+        format: 'json',
+      },
+    }).pipe(
+      map((value) => {
+        if ((value as any).result) {
+          if (action.payload.paymentCode === 'DIRECT' || action.payload.paymentCode === 'BANK_TRANSFER') {
+            GlobalModalSetup.getGlobalModalHolder().submitSuccessMessage(
+              'success',
+              'Đặt vé thành công! Vui lòng thanh toán trong vòng 24h kể từ ngày đặt.',
+              `Mã vé chiều đi: ${(value as any).result.ticket1.ticketId} \n Mã vé chiều về: ${(value as any).result.ticket2.ticketId}`
+            );
+          } else {
+            GlobalModalSetup.getGlobalModalHolder().submitSuccessMessage(
+              'success',
+              'Thanh toán đơn hàng thành công! Vui lòng kiểm tra email và tin nhắn để xem thông tin vé.',
+              `Mã vé chiều đi: ${(value as any).result.ticket1.ticketId} \n Mã vé chiều về: ${(value as any).result.ticket2.ticketId}`
+            );
+          }
+          return Submit2TicketSuccess.get((value as any).result);
+        }
+        GlobalModalSetup.getGlobalModalHolder().alertMessage(
+          'error',
+          'Thanh toán đơn hàng thất bại. Vui lòng thử lại sau.',
+        );
+        return Submit2TicketFailed.get();
+      }),
+      catchError((error) => {
+        GlobalModalSetup.getGlobalModalHolder().alertMessage(
+          'error',
+          'Thanh toán đơn hàng thất bại. Vui lòng thử lại sau.',
+        );
+        return of(Submit2TicketFailed.get(error));
+      }),
+    );
+  }),
+);
+
 const submitTicket$ = (action$: Observable<PlainAction>) =>
 action$.pipe( 
   ofType(SubmitTicket.type),
   exhaustMap((action: any) => {
     GlobalLoadingSetup.getLoading().isVisible();
-    console.info(action.payload.pay)
     return request<any>({
       method: 'POST',
-      url: 'getSeat',
+      url: 'submitTicket',
       param: action.payload.pay,
       option: {
         format: 'json',
@@ -112,20 +157,20 @@ action$.pipe(
       map((value) => {
         GlobalLoadingSetup.getLoading().isHide();
         if ((value as any).result) {
-          if (action.payload.isShowModal === true) {
             if (action.payload.paymentCode === 'DIRECT' || action.payload.paymentCode === 'BANK_TRANSFER') {
-              GlobalModalSetup.getGlobalModalHolder().alertMessage(
+              GlobalModalSetup.getGlobalModalHolder().submitSuccessMessage(
                 'success',
                 'Đặt vé thành công! Vui lòng thanh toán trong vòng 24h kể từ ngày đặt.',
+                `Mã vé: ${(value as any).result.ticketId}`
               );
             } else {
-              GlobalModalSetup.getGlobalModalHolder().alertMessage(
+              GlobalModalSetup.getGlobalModalHolder().submitSuccessMessage(
                 'success',
                 'Thanh toán đơn hàng thành công! Vui lòng kiểm tra email và tin nhắn để xem thông tin vé.',
+                `Mã vé: ${(value as any).result.ticketId}`
               );
             }
-          }
-          return SubmitTicketSuccess.get((value as any).result);
+            return SubmitTicketSuccess.get((value as any).result);
         }
         GlobalModalSetup.getGlobalModalHolder().alertMessage(
           'error',
@@ -147,7 +192,7 @@ action$.pipe(
 
 const finishSubmit$ = (action$: Observable<PlainAction>) =>
 action$.pipe(
-  ofType(SubmitTicketSuccess.type, SubmitTicketFailed.type),
+  ofType(SubmitTicketSuccess.type, Submit2TicketSuccess.type),
   map((action: any) => {
     const resetAction = StackActions.reset({
       index: 0,
@@ -157,4 +202,30 @@ action$.pipe(
   }),
 );
 
-export const searchEpics = combineEpics(getFilter$, getFilterSuccess$, getSeats$ , getSeatsSuccess$, submitTicket$, finishSubmit$);
+const submitPromoteCode$ = (action$: Observable<PlainAction>) =>
+action$.pipe(
+  ofType(SubmitPromoteCode.type),
+  exhaustMap((action: any) => {
+    console.info('mmmmmm', action.payload)
+    return request<any>({
+      method: 'POST',
+      url: 'promotionDiscount',
+      param: action.payload,
+      option: {
+        format: 'json',
+      },
+    }).pipe(
+      map((value) => {
+        if ((value as any).result) {
+          return SubmitPromoteCodeSuccess.get((value as any).result);
+        }
+        return SubmitPromoteCodeFailed.get();
+      }),
+      catchError((error) => {
+        return of(SubmitPromoteCodeFailed.get(error));
+      }),
+    );
+  }),
+);
+
+export const searchEpics = combineEpics(getFilter$, getFilterSuccess$, getSeats$ , getSeatsSuccess$, submitTicket$, finishSubmit$, submit2Ticket$, submitPromoteCode$);

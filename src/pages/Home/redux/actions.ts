@@ -18,4 +18,8 @@ export const FilterTrips = defineAction<any>('FILTER_TRIPS');
 export const FilterTripsSuccess = defineAction<any>('FILTER_TRIPS_SUCCESS');
 export const FilterTripsFailed = defineAction<any>('FILTER_TRIPS_FAILED');
 
-export const ResetFilter = defineAction<any>('RESET_FILTER')
+export const ResetFilter = defineAction<any>('RESET_FILTER');
+
+export const GetNoti = defineAction<any>('GET_NOTI');
+export const GetNotiSuccess = defineAction<any>('GET_NOTI_SUCCESS');
+export const GetNotiFailed = defineAction<any>('GET_NOTI_FAILED');

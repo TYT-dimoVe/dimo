@@ -1,6 +1,6 @@
 import { PlainAction } from 'redux-typed-actions';
 import { homeState } from 'pages/Home/model';
-import { GetCitiesSuccess, SearchTripsSuccess, SaveRoundTrip, LoadMoreTripsSuccess, FilterTripsSuccess, ResetFilter } from 'pages/Home/redux/actions';
+import { GetCitiesSuccess, SearchTripsSuccess, SaveRoundTrip, LoadMoreTripsSuccess, FilterTripsSuccess, ResetFilter, GetNotiSuccess } from 'pages/Home/redux/actions';
 
 const initialState: homeState = {
   cities: [],
@@ -16,6 +16,7 @@ const initialState: homeState = {
   dropDownCity: '',
   isFilter: false,
   round1Date: '',
+  noti: [],
 };
 
 export function homeReducer(state: homeState = initialState, action: PlainAction) {
@@ -63,6 +64,11 @@ export function homeReducer(state: homeState = initialState, action: PlainAction
         return {
           ...state,
           isFilter: false,
+        }
+      case GetNotiSuccess.type:
+        return {
+          ...state,
+          noti: action.payload,
         }
     default:
       return state;

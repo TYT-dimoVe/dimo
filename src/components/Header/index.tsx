@@ -15,6 +15,7 @@ interface Props {
     onBack?: () => void;
     onLeftPress?: () => void;
     onRightPress?: () => void;
+    notiStatus?: number;
 }
 
 class Header extends React.Component<Props, {}> {
@@ -28,7 +29,8 @@ class Header extends React.Component<Props, {}> {
         searchOrder: () => {},
         onBack: () => {},
         onLeftPress: () => {},
-        onRightPress: () => {}
+        onRightPress: () => {},
+        notiStatus: 0,
     }
 
     render() {
@@ -36,7 +38,7 @@ class Header extends React.Component<Props, {}> {
 
         if (type === HEADER_TYPE.MAIN) {
             return (
-                <MainHeader viewNoti={this.props.viewNoti} searchOrder={this.props.searchOrder} />
+                <MainHeader viewNoti={this.props.viewNoti} searchOrder={this.props.searchOrder} notiStatus={this.props.notiStatus}/>
             )
         }
         if (type === HEADER_TYPE.NORMAL) {

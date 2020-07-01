@@ -1,7 +1,7 @@
 import { Observable } from 'redux';
 import { PlainAction } from 'redux-typed-actions';
 import { ofType, combineEpics } from 'redux-observable';
-import { GetCities, GetCitiesFailed, GetCitiesSuccess, SearchTrips, SearchTripsSuccess, SearchTripsFailed, LoadMoreTrips, LoadMoreTripsSuccess, LoadMoreTripsFailed, FilterTrips, FilterTripsSuccess, FilterTripsFailed } from 'pages/Home/redux/actions';
+import { GetCities, GetCitiesFailed, GetCitiesSuccess, SearchTrips, SearchTripsSuccess, SearchTripsFailed, LoadMoreTrips, LoadMoreTripsSuccess, LoadMoreTripsFailed, FilterTrips, FilterTripsSuccess, FilterTripsFailed, GetNoti, GetNotiSuccess, GetNotiFailed } from 'pages/Home/redux/actions';
 import { GlobalLoadingSetup, GlobalModalSetup } from 'components';
 import { exhaustMap, catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -13,17 +13,20 @@ const getCities$ = (action$: Observable<PlainAction>) =>
   action$.pipe(
     ofType(GetCities.type),
     exhaustMap((action: any) => {
+      GlobalLoadingSetup.getLoading().isVisible();
       return request<any>({
         method: 'GET',
         url: 'cities',
       }).pipe(
         map((value) => {
+          GlobalLoadingSetup.getLoading().isHide();
           if ((value as any).result.length > 0) {
             return GetCitiesSuccess.get((value as any).result);
           }
           return GetCitiesFailed.get();
         }),
         catchError((error) => {
+          GlobalLoadingSetup.getLoading().isHide();
           return of(GetCitiesFailed.get(error));
         }),
       );
@@ -158,4 +161,25 @@ const getCities$ = (action$: Observable<PlainAction>) =>
       );
     }),
   );
-export const homeEpics = combineEpics(getCities$, searchTrips$, searchTripsSuccess$, loadMoreTrips$, filterTrips$, filterTripsSuccess$);
+
+  const getNoti$ = (action$: Observable<PlainAction>) =>
+  action$.pipe(
+    ofType(GetNoti.type),
+    exhaustMap((action: any) => {
+      return request<any>({
+        method: 'GET',
+        url: 'notiPromotion',
+      }).pipe(
+        map((value) => {
+          if ((value as any).result.length > 0) {
+            return GetNotiSuccess.get((value as any).result);
+          }
+          return GetNotiFailed.get();
+        }),
+        catchError((error) => {
+          return of(GetNotiFailed.get(error));
+        }),
+      );
+    }),
+  );
+export const homeEpics = combineEpics(getCities$, searchTrips$, searchTripsSuccess$, loadMoreTrips$, filterTrips$, filterTripsSuccess$, getNoti$);

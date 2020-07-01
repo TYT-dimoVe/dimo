@@ -1,25 +1,19 @@
-import {CHeader, CText, CInput} from 'components';
-import {COLOR, HEADER_TYPE, ratio} from 'config/themeUtils';
-import moment from 'moment';
+import { CHeader, CText } from 'components';
+import { COLOR, HEADER_TYPE, ratio } from 'config/themeUtils';
+import { orderState } from 'pages/SearchOrder/model';
 import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  FlatList,
-  View,
-  TouchableOpacity,
+
+  View
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {NavigationInjectedProps} from 'react-navigation';
-import {connect} from 'react-redux';
-import {PlainAction} from 'redux-typed-actions';
-import {constant} from './constant';
-import {SearchOrder} from './redux/actions';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
-import {FormikErrors, FormikProps, withFormik} from 'formik';
-import {orderState} from 'pages/SearchOrder/model';
-import {formatCurrency} from 'utils/function';
+import { NavigationInjectedProps } from 'react-navigation';
+import { connect } from 'react-redux';
+import { PlainAction } from 'redux-typed-actions';
+import { formatCurrency } from 'utils/function';
+import { constant } from './constant';
+import { SearchOrder } from './redux/actions';
 
 const mapStateToProps = (state: any) => {
   return {

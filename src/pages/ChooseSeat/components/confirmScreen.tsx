@@ -1,4 +1,4 @@
-import {CHeader, CText} from 'components';
+import {CHeader, CText, CInput} from 'components';
 import {COLOR, HEADER_TYPE, ratio} from 'config/themeUtils';
 import {seatsState} from 'pages/ChooseSeat/model';
 import {homeState} from 'pages/Home/model';
@@ -13,6 +13,7 @@ import {PlainAction} from 'redux-typed-actions';
 import {convertMoney} from 'utils/function';
 import {constant} from '../constant';
 import {UpdateTranship, GetPaymentMethod} from '../redux/actions';
+import { SubmitPromoteCode } from 'pages/SearchTrip/redux/actions';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -26,7 +27,8 @@ const mapDispatchToProps = (dispatch: (action: PlainAction) => void) => {
   return {
     searchTrips: (val: any) => dispatch(SearchTrips.get(val)),
     updateTranship: (val: any) => dispatch(UpdateTranship.get(val)),
-    getPaymentMethod: () => dispatch(GetPaymentMethod.get())
+    getPaymentMethod: () => dispatch(GetPaymentMethod.get()),
+    submitPromoteCode: (val: any) => dispatch(SubmitPromoteCode.get(val))
   };
 };
 
@@ -38,9 +40,11 @@ interface Props
   searchTrips: (val: any) => void;
   updateTranship: (val: any) => void;
   getPaymentMethod: () => void;
-    }
+  submitPromoteCode: (val: any) => void;
+}
 
 interface State {
+  promotionCode: string;
 }
 
 export class ConfirmComponent extends React.Component<Props, State> {
@@ -52,8 +56,10 @@ export class ConfirmComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      promotionCode: '',
     };
   }
+
   renderInfo = (type: number) => {
     return (
       <View style={{marginHorizontal: 10 * ratio}}>
@@ -141,8 +147,8 @@ export class ConfirmComponent extends React.Component<Props, State> {
             <CText bold fontSize={16} color={COLOR.RED}>
               {convertMoney(
                 type === 1
-                  ? this.props.seatRound1.totalPrice
-                  : this.props.seatRound2.totalPrice,
+                  ? this.props.seatRound1.totalPrice * (1 - this.props.promotePercent)
+                  : this.props.seatRound2.totalPrice * (1 - this.props.promotePercent),
               )}
             </CText>
           </View>
@@ -161,7 +167,9 @@ export class ConfirmComponent extends React.Component<Props, State> {
               backgroundColor: COLOR.PRIMARY_ORANGE,
             },
           ]}
-          onPress={() => {this.props.getPaymentMethod()}}>
+          onPress={() => {
+            this.props.getPaymentMethod();
+          }}>
           <CText bold color={COLOR.WHITE} fontSize={20}>
             Xác nhận
           </CText>
@@ -178,10 +186,7 @@ export class ConfirmComponent extends React.Component<Props, State> {
             <CText bold fontSize={16} color={COLOR.DARK_BLUE}>
               Họ và tên hành khách
             </CText>
-            <CText
-              bold
-              fontSize={16}
-              color={COLOR.PRIMARY_ORANGE}>
+            <CText bold fontSize={16} color={COLOR.PRIMARY_ORANGE}>
               {this.props.customerInfo.customerName || ''}
             </CText>
           </View>
@@ -208,6 +213,43 @@ export class ConfirmComponent extends React.Component<Props, State> {
     );
   };
 
+  renderPromotionCode = () => {
+    return (
+      <View style={styles.viewWrap}>
+        <CInput
+          style={styles.containerInput}
+          placeholder={'Mã khuyến mãi'}
+          value={this.state.promotionCode}
+          onChangeText={(text: string) =>
+            this.setState({promotionCode: text})
+          }
+          textSize={18}
+          editable={!this.props.isDisableBtn}
+        />
+        <TouchableOpacity
+          style={[
+            styles.promoBtn,
+            {
+              backgroundColor: COLOR.PRIMARY_BLUE,
+              width: 135 * ratio,
+              marginLeft: 16 * ratio,
+            },
+          ]}
+          disabled={this.props.isDisableBtn}
+          onPress={() => {
+            const val = {
+              promotionCode: this.state.promotionCode.toUpperCase(),
+            }
+            this.props.submitPromoteCode(val)
+          }}>
+          <CText bold color={COLOR.WHITE} fontSize={20}>
+            Xác nhận
+          </CText>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -218,14 +260,27 @@ export class ConfirmComponent extends React.Component<Props, State> {
         />
         <View style={styles.listWrap}>
           <ScrollView style={{flex: 1}}>
-          {this.renderCustomerInfo()}
-          <View style={styles.separateLine} />
-          {this.renderInfo(1)}
-          {this.props.isRoundTrip && <View style={styles.separateLine} />}
-          {this.props.isRoundTrip && this.renderInfo(2)}
-        </ScrollView>
+            {this.renderCustomerInfo()}
+            <View style={styles.separateLine} />
+            {this.renderInfo(1)}
+            {this.props.isRoundTrip && <View style={styles.separateLine} />}
+            {this.props.isRoundTrip && this.renderInfo(2)}
+          </ScrollView>
         </View>
-
+        
+        <View style={[styles.textWrap, {marginHorizontal: 10 * ratio}]}>
+            <CText bold fontSize={18} color={COLOR.DARK_BLUE}>
+            Thành tiền
+            </CText>
+            <CText bold fontSize={18} color={COLOR.RED}>
+              {convertMoney(
+                this.props.isRoundTrip
+                  ? this.props.seatRound1.totalPrice * (1 - this.props.promotePercent) + this.props.seatRound2.totalPrice * (1 - this.props.promotePercent)
+                  : this.props.seatRound1.totalPrice * (1 - this.props.promotePercent),
+              )}
+            </CText>
+        </View>
+        {this.renderPromotionCode()}
         {this.renderBtn()}
       </SafeAreaView>
     );
@@ -253,20 +308,14 @@ const styles = StyleSheet.create({
   },
   viewWrap: {
     backgroundColor: COLOR.WHITE,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 4 * ratio,
-      height: 3 * ratio,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 2 * ratio,
-    borderRadius: 9 * ratio,
-    marginHorizontal: 20 * ratio,
+    marginHorizontal: 10 * ratio,
     marginTop: 8 * ratio,
     marginBottom: 8 * ratio,
     paddingHorizontal: 15 * ratio,
     paddingVertical: 10 * ratio,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   btnWrap: {
     borderRadius: 9 * ratio,
@@ -291,12 +340,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerInput: {
-    marginVertical: 8 * ratio,
     borderWidth: 1 * ratio,
     borderRadius: 9 * ratio,
     borderColor: COLOR.PRIMARY_BLUE,
-    height: 54 * ratio,
+    height: 45 * ratio,
     alignItems: 'center',
+    width: 180 * ratio,
   },
   textWrap: {
     flexDirection: 'row',
@@ -307,5 +356,19 @@ const styles = StyleSheet.create({
   separateLine: {
     height: 8 * ratio,
     backgroundColor: COLOR.LIGHT_GRAY,
+  },
+  promoBtn: {
+    borderRadius: 9 * ratio,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 4 * ratio,
+      height: 3 * ratio,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2 * ratio,
+    height: 45 * ratio,
   },
 });
