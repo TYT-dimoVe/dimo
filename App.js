@@ -77,7 +77,8 @@ class AppComponent extends React.Component {
   }
 }
 
-const App = codePush(AppComponent);
+// const App = codePush(AppComponent);
+const App = AppComponent;
 export default App;
 
 const styles = StyleSheet.create({
