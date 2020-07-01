@@ -10,15 +10,15 @@ export const constant = {
       longitude: 109.19432
     },
     SAIGON: {
-      latitude: 10.762622,
-      longitude: 106.660172
+      latitude: 10.82302,
+      longitude: 106.62965
     },
     DALAT: {
-      latitude: 11.3397743,
-      longitude: 107.0122235
+      latitude: 11.94646,
+      longitude: 108.44193
     },
     VUNGTAU: {
-      latitude: 10.4034998,
-      longitude: 107.0530107,
+      latitude: 10.34599,
+      longitude: 107.08426,
     }
   }

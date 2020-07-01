@@ -16,3 +16,7 @@ export const SubmitTicketSuccessNotBack = defineAction<any>('SUBMIT_TICKET_SUCCE
 export const Submit2Ticket = defineAction<any>('SUBMIT_2TICKET');
 export const Submit2TicketSuccess = defineAction<any>('SUBMIT_2TICKET_SUCCESS');
 export const Submit2TicketFailed = defineAction<any>('SUBMIT_2TICKET_FAILED');
+
+export const SubmitPromoteCode = defineAction<any>('SUBMIT_PROMOTE_CODE');
+export const SubmitPromoteCodeSuccess = defineAction<any>('SUBMIT_PROMOTE_CODE_SUCCESS');
+export const SubmitPromoteCodeFailed = defineAction<any>('SUBMIT_PROMOTE_CODE_FAILED');

@@ -1,6 +1,6 @@
 import AppWithNavigationState from 'navigators/AppNavigator';
 import React from 'react';
-import { StatusBar, StyleSheet, Text, View, BackHandler } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, BackHandler, Alert } from 'react-native';
 import codePush from 'react-native-code-push';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -25,7 +25,7 @@ class AppComponent extends React.Component {
   componentWillMount() {
     this.backHandler();
     codePush.sync({
-      updateDialog: true,
+      updateDialog: false,
       installMode: codePush.InstallMode.IMMEDIATE,
     });
   }
@@ -40,15 +40,15 @@ class AppComponent extends React.Component {
         if (getCurrentRouteName(store.getState().nav) === 'Home') {
           Alert.alert(
             '',
-            translate('common:exitApp'),
+            'Thoát ứng dụng?',
             [
               {
-                text: translate('common:no'),
+                text: 'Từ chối',
                 onPress: () => console.info('Cancel Pressed'),
                 style: 'cancel',
               },
               {
-                text: translate('common:yes'),
+                text: 'Đồng ý',
                 onPress: () => BackHandler.exitApp(),
               },
             ],

@@ -5,10 +5,7 @@ import React from 'react';
 import {
   Modal, SafeAreaView,
   StyleSheet,
-
-
   TouchableOpacity,
-
   TouchableWithoutFeedback, View
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
@@ -19,7 +16,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { PlainAction } from 'redux-typed-actions';
 import { constant } from './constant';
-import { GetCities, SaveRoundTrip, SearchTrips } from './redux/actions';
+import { GetCities, SaveRoundTrip, SearchTrips, GetNoti } from './redux/actions';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -32,6 +29,7 @@ const mapDispatchToProps = (dispatch: (action: PlainAction) => void) => {
     getCities: () => dispatch(GetCities.get()),
     searchTrips: (val: any) => dispatch(SearchTrips.get(val)),
     saveRoundTrip: (val: any) => dispatch(SaveRoundTrip.get(val)),
+    getNoti: () => dispatch(GetNoti.get())
   };
 };
 
@@ -40,6 +38,7 @@ export interface Props extends NavigationInjectedProps {
   cities: any;
   searchTrips: (val: any) => void;
   saveRoundTrip: (val: any) => void;
+  getNoti: () => void;
 }
 
 interface State {
@@ -87,6 +86,7 @@ class HomeComponent extends React.Component<Props, State> {
 
   componentDidMount() {
     this.props.getCities();
+    this.props.getNoti();
   }
 
   renderCities = () => {
@@ -218,6 +218,7 @@ class HomeComponent extends React.Component<Props, State> {
                 type="radio"
                 check={!this.state.isRoundTrip}
                 color={COLOR.PRIMARY_BLUE}
+                onPress={() => this.setState({ isRoundTrip: false })}
               />
               <CText
                 bold
@@ -245,6 +246,7 @@ class HomeComponent extends React.Component<Props, State> {
                 type="radio"
                 check={this.state.isRoundTrip}
                 color={COLOR.PRIMARY_BLUE}
+                onPress={() =>  this.state.pickUpCity !== '' && this.state.dropdownCity !== '' && this.setState({ isRoundTrip: true })}
               />
               <CText
                 bold
@@ -372,10 +374,13 @@ class HomeComponent extends React.Component<Props, State> {
       <SafeAreaView style={styles.container}>
         <CHeader
           type={HEADER_TYPE.MAIN}
-          viewNoti={() => console.info('View noti')}
+          viewNoti={() => {
+            this.props.navigation.navigate('ListNoti');
+          }}
           searchOrder={() => {
             this.props.navigation.navigate('SearchOrder');
           }}
+          notiStatus={this.props.noti.length}
         />
         <KeyboardAwareScrollView
           style={styles.listWrap}

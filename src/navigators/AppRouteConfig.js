@@ -13,6 +13,7 @@ import TranshipmentScreen from 'pages/ChooseSeat/components/transhipmentScreen';
 import InfomationScreen from 'pages/ChooseSeat/components/infomationScreen';
 import ConfirmScreen from 'pages/ChooseSeat/components/confirmScreen';
 import PaymentScreen from 'pages/ChooseSeat/components/paymentScreen';
+import ListNotiScreen from 'pages/Home/components/listNotiScreen';
 
 const MainStack = createStackNavigator(
   {
@@ -25,7 +26,8 @@ const MainStack = createStackNavigator(
     Transhipment: { screen: TranshipmentScreen},
     Infomation: { screen: InfomationScreen},
     Confirm: { screen: ConfirmScreen },
-    Payment: { screen: PaymentScreen }
+    Payment: { screen: PaymentScreen },
+    ListNoti: { screen: ListNotiScreen}
   },
   {
     headerMode: 'null',

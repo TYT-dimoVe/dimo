@@ -1,18 +1,27 @@
-import { ratio, ratioH, ratioW, COLOR } from 'config/themeUtils';
+import {ratio, ratioH, ratioW, COLOR} from 'config/themeUtils';
 import React from 'react';
-import { ImageBackground, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  ImageBackground,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
   viewNoti?: () => void;
   searchOrder?: () => void;
+  notiStatus?: number;
 }
 
 class MainHeader extends React.Component<Props, {}> {
   static defaultProps = {
     viewNoti: () => {},
-    searchOrder: () => {}
+    searchOrder: () => {},
+    notiStatus: 0,
   };
 
   render() {
@@ -22,11 +31,36 @@ class MainHeader extends React.Component<Props, {}> {
         style={styles.background}>
         <StatusBar translucent={true} backgroundColor="transparent" />
         <View style={styles.headerWrap}>
-          <TouchableOpacity style={styles.iconContainer} onPress={this.props.searchOrder}>
-              <MaterialCommunityIcons name={'feature-search-outline'} color={COLOR.WHITE} size={24 * ratio}/>
+          <TouchableOpacity
+            style={styles.iconContainer}
+            onPress={this.props.searchOrder}>
+            <MaterialCommunityIcons
+              name={'feature-search-outline'}
+              color={COLOR.WHITE}
+              size={24 * ratio}
+            />
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.iconContainer, { marginLeft: 20 * ratio}]} onPress={this.props.viewNoti}>
-              <MaterialIcons name={'notifications-none'} color={COLOR.WHITE} size={24 * ratio}/>
+          <TouchableOpacity
+            style={[styles.iconContainer, {marginLeft: 20 * ratio}]}
+            onPress={this.props.viewNoti}>
+            <MaterialIcons
+              name={'notifications-none'}
+              color={COLOR.WHITE}
+              size={24 * ratio}
+            />
+            {this.props.notiStatus > 0 && (
+              <View
+                style={{
+                  width: 8 * ratio,
+                  height: 8 * ratio,
+                  position: 'absolute',
+                  top: 0,
+                  right: 3 * ratio,
+                  backgroundColor: COLOR.RED,
+                  borderRadius: 4 * ratio,
+                }}
+              />
+            )}
           </TouchableOpacity>
         </View>
       </ImageBackground>

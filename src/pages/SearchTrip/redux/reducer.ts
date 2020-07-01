@@ -1,8 +1,7 @@
-import { PlainAction } from 'redux-typed-actions';
-import { searchState } from 'pages/SearchTrip/model';
-import { GetFilterSuccess, GetSeatSuccess } from './actions';
 import { FilterTripsSuccess } from 'pages/Home/redux/actions';
-import { number } from 'yup';
+import { searchState } from 'pages/SearchTrip/model';
+import { PlainAction } from 'redux-typed-actions';
+import { GetFilterSuccess, GetSeatSuccess, SubmitPromoteCodeSuccess } from './actions';
 
 const initialState: searchState = {
   timeVal: '',
@@ -20,6 +19,8 @@ const initialState: searchState = {
   round1: [],
   round2: [],
   round: 1,
+  promotePercent: 0,
+  isDisableBtn: false,
 };
 
 export function searchReducer(state: searchState = initialState, action: PlainAction) {
@@ -50,6 +51,12 @@ export function searchReducer(state: searchState = initialState, action: PlainAc
             busTypeVal: action.payload.busTypeVal,
             priceFrom: action.payload.priceFrom,
             priceTo: action.payload.priceTo,
+          }
+        case SubmitPromoteCodeSuccess.type:
+          return {
+            ...state,
+            promotePercent: action.payload,
+            isDisableBtn:true,
           }
     default:
       return state;

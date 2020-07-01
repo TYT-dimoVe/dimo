@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 import {PlainAction} from 'redux-typed-actions';
 import {constant} from '../constant';
 import { SaveCustomerInfo } from '../redux/actions';
+import { validateEmail } from 'utils/function';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -75,10 +76,10 @@ export class InformationComponent extends React.Component<
       // if (!values.email) {
       //   errors.email = 'Vui lòng nhập email'
       // }
-      // if (values.email !== '' &&
-      //   (validateEmail(values.email))) {
-      //   errors.phoneNumber = 'Email không hợp lệ!';
-      // }
+      if (values.email !== '' &&
+        !(validateEmail(values.email))) {
+        errors.email = 'Email không hợp lệ!';
+      }
       if (!values.id) {
         errors.id = 'Vui lòng nhập CMND/CCCD';
       }

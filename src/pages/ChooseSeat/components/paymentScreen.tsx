@@ -1,16 +1,16 @@
-import { CHeader, Check, CText } from 'components';
-import { COLOR, HEADER_TYPE, ratio } from 'config/themeUtils';
-import { seatsState } from 'pages/ChooseSeat/model';
-import { homeState } from 'pages/Home/model';
-import { searchState } from 'pages/SearchTrip/model';
-import { SubmitTicket, Submit2Ticket } from 'pages/SearchTrip/redux/actions';
+import {CHeader, Check, CText} from 'components';
+import {COLOR, HEADER_TYPE, ratio} from 'config/themeUtils';
+import {seatsState} from 'pages/ChooseSeat/model';
+import {homeState} from 'pages/Home/model';
+import {searchState} from 'pages/SearchTrip/model';
+import {SubmitTicket, Submit2Ticket} from 'pages/SearchTrip/redux/actions';
 import React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationInjectedProps } from 'react-navigation';
-import { connect } from 'react-redux';
-import { PlainAction } from 'redux-typed-actions';
-import { constant } from '../constant';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {NavigationInjectedProps} from 'react-navigation';
+import {connect} from 'react-redux';
+import {PlainAction} from 'redux-typed-actions';
+import {constant} from '../constant';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -79,15 +79,31 @@ export class PaymentComponent extends React.Component<Props, State> {
 
   submitPayment = () => {
     if (this.props.isRoundTrip === true) {
-      const pay1 = {
+      const round1 = {
         tripId: this.props.round1.tripId,
-        totalPrice: this.props.seatRound1.totalPrice,
+        totalPrice:
+          this.props.seatRound1.totalPrice * (1 - this.props.promotePercent),
         busType: this.props.round1.busType,
         departureDay: this.props.round1.date,
         busOperator: this.props.round1.busOperator,
         busOperatorId: this.props.round1.busOperatorId,
         totalTicketAmount: this.props.seatRound1.seats?.length,
         seatId: this.props.seatRound1.seats,
+      };
+      const round2 = {
+        tripId: this.props.round2.tripId,
+        totalPrice:
+          this.props.seatRound2.totalPrice * (1 - this.props.promotePercent),
+        busType: this.props.round2.busType,
+        departureDay: this.props.round2.date,
+        busOperator: this.props.round2.busOperator,
+        busOperatorId: this.props.round2.busOperatorId,
+        totalTicketAmount: this.props.seatRound2.seats?.length,
+        seatId: this.props.seatRound2.seats,
+      };
+      const val = {
+        round1,
+        round2,
         customerName: this.props.customerInfo.customerName,
         phoneNumber: this.props.customerInfo.phoneNumber,
         identityId: this.props.customerInfo.identityId,
@@ -99,31 +115,6 @@ export class PaymentComponent extends React.Component<Props, State> {
           this.state.chooseMethod === 'BANK_TRANSFER'
             ? false
             : true,
-      }
-      const pay2 = {
-        tripId: this.props.round1.tripId,
-          totalPrice: this.props.seatRound2.totalPrice,
-          busType: this.props.round2.busType,
-          departureDay: this.props.round2.date,
-          busOperator: this.props.round2.busOperator,
-          busOperatorId: this.props.round2.busOperatorId,
-          totalTicketAmount: this.props.seatRound2.seats?.length,
-          seatId: this.props.seatRound2.seats,
-          customerName: this.props.customerInfo.customerName,
-          phoneNumber: this.props.customerInfo.phoneNumber,
-          identityId: this.props.customerInfo.identityId,
-          customerEmail: this.props.customerInfo.customerEmail || '',
-          paymentCode: this.state.chooseMethod,
-          paymentTitle: this.state.methodTitle,
-          paymentStatus:
-            this.state.chooseMethod === 'DIRECT' ||
-            this.state.chooseMethod === 'BANK_TRANSFER'
-              ? false
-              : true,
-      }
-      const val = {
-        pay1,
-        pay2,
         isShowModal: true,
       };
       this.props.submit2Ticket(val);
@@ -131,7 +122,8 @@ export class PaymentComponent extends React.Component<Props, State> {
       const val = {
         pay: {
           tripId: this.props.round1.tripId,
-          totalPrice: this.props.seatRound1.totalPrice,
+          totalPrice:
+            this.props.seatRound1.totalPrice * (1 - this.props.promotePercent),
           busType: this.props.round1.busType,
           departureDay: this.props.round1.date,
           busOperator: this.props.round1.busOperator,
@@ -161,7 +153,15 @@ export class PaymentComponent extends React.Component<Props, State> {
         {this.props.paymentMethod.length > 0 &&
           this.props.paymentMethod.map((method) => {
             return (
-              <View style={styles.row}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.row}
+                onPress={() =>
+                  this.setState({
+                    chooseMethod: method.code,
+                    methodTitle: method.title,
+                  })
+                }>
                 <Check
                   type={'radio'}
                   color={COLOR.PRIMARY_BLUE}
@@ -176,7 +176,7 @@ export class PaymentComponent extends React.Component<Props, State> {
                 <CText fontSize={16} color={COLOR.DARK_BLUE} bold>
                   {method.title}
                 </CText>
-              </View>
+              </TouchableOpacity>
             );
           })}
       </View>
