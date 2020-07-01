@@ -224,6 +224,7 @@ export class ConfirmComponent extends React.Component<Props, State> {
             this.setState({promotionCode: text})
           }
           textSize={18}
+          editable={!this.props.isDisableBtn}
         />
         <TouchableOpacity
           style={[
