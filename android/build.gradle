@@ -3,9 +3,10 @@
 buildscript {
     ext {
         buildToolsVersion = "28.0.3"
-        minSdkVersion = 26
+        minSdkVersion = 16
         compileSdkVersion = 28
         targetSdkVersion = 28
+        supportLibVersion = "28.0.0" // default: 23.1.1
     }
     repositories {
         google()
@@ -13,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.2")
-
+        classpath 'com.google.gms:google-services:4.3.3'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -38,4 +39,13 @@ allprojects {
             url 'https://maven.google.com'
         }
     }
+}
+ext {
+    playServicesVersion  = "17.0.0" // default: "+"
+    // Other settings
+    compileSdkVersion = 28 // default: 23
+    buildToolsVersion = "28.0.3" // default: "23.0.1"
+    targetSdkVersion = 28 // default: 23
+    supportLibVersion = "28.0.0" // default: 23.1.1
+    androidMapsUtilsVersion = "0.5+"
 }
