@@ -125,7 +125,7 @@ class ModalScreen extends React.Component<Props, State> {
                   style={{textAlign: 'center'}}>
                   {this.state.content}
                 </CText>
-                {this.state.bookingIDs.length > 0 && (
+                {this.state.bookingIDs.length > 0 && this.state.type === 'success-submit'  && (
                   <View
                     style={{
                       flexDirection: 'row',

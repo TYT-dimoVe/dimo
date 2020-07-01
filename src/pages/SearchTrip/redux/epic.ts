@@ -111,13 +111,13 @@ action$.pipe(
         if ((value as any).result) {
           if (action.payload.paymentCode === 'DIRECT' || action.payload.paymentCode === 'BANK_TRANSFER') {
             GlobalModalSetup.getGlobalModalHolder().submitSuccessMessage(
-              'success',
+              'success-submit',
               'Đặt vé thành công! Vui lòng thanh toán trong vòng 24h kể từ ngày đặt.',
               `Mã vé chiều đi: ${(value as any).result.ticket1.ticketId} \n Mã vé chiều về: ${(value as any).result.ticket2.ticketId}`
             );
           } else {
             GlobalModalSetup.getGlobalModalHolder().submitSuccessMessage(
-              'success',
+              'success-submit',
               'Thanh toán đơn hàng thành công! Vui lòng kiểm tra email và tin nhắn để xem thông tin vé.',
               `Mã vé chiều đi: ${(value as any).result.ticket1.ticketId} \n Mã vé chiều về: ${(value as any).result.ticket2.ticketId}`
             );
@@ -159,13 +159,13 @@ action$.pipe(
         if ((value as any).result) {
             if (action.payload.paymentCode === 'DIRECT' || action.payload.paymentCode === 'BANK_TRANSFER') {
               GlobalModalSetup.getGlobalModalHolder().submitSuccessMessage(
-                'success',
+                'success-submit',
                 'Đặt vé thành công! Vui lòng thanh toán trong vòng 24h kể từ ngày đặt.',
                 `Mã vé: ${(value as any).result.ticketId}`
               );
             } else {
               GlobalModalSetup.getGlobalModalHolder().submitSuccessMessage(
-                'success',
+                'success-submit',
                 'Thanh toán đơn hàng thành công! Vui lòng kiểm tra email và tin nhắn để xem thông tin vé.',
                 `Mã vé: ${(value as any).result.ticketId}`
               );
