@@ -20,3 +20,5 @@ export const Submit2TicketFailed = defineAction<any>('SUBMIT_2TICKET_FAILED');
 export const SubmitPromoteCode = defineAction<any>('SUBMIT_PROMOTE_CODE');
 export const SubmitPromoteCodeSuccess = defineAction<any>('SUBMIT_PROMOTE_CODE_SUCCESS');
 export const SubmitPromoteCodeFailed = defineAction<any>('SUBMIT_PROMOTE_CODE_FAILED');
+
+export const ClearPromotion = defineAction<any>('CLEAR_PROMOTION');

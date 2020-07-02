@@ -218,11 +218,6 @@ class SearchTripsComponent extends React.Component<Props, State> {
               <CText bold color={'#616167'} fontSize={16}>
                 Lọc theo
               </CText>
-              <Feather
-                name={'chevron-down'}
-                color={COLOR.DEACTIVE_GRAY}
-                size={24 * ratio}
-              />
             </TouchableOpacity>
           </View>
           <FlatList
@@ -262,8 +257,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 20 * ratio,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 3 * ratio,
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 10 * ratio,
     paddingVertical: 8 * ratio,
     width: 120 * ratio,
     height: 40 * ratio,

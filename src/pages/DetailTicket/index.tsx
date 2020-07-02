@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import { PlainAction } from 'redux-typed-actions';
 import { formatCurrency } from 'utils/function';
 import { constant } from './constant';
-import { SearchOrder } from './redux/actions';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -24,12 +23,10 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: (action: PlainAction) => void) => {
   return {
-    searchOrder: (val: any) => dispatch(SearchOrder.get(val)),
   };
 };
 
 interface Props extends NavigationInjectedProps, orderState {
-  searchOrder: (val: any) => void;
 }
 
 interface State {}
@@ -92,7 +89,7 @@ export class DetailOrderComponent extends React.Component<Props, State> {
             Tuyến xe
           </CText>
           <CText bold color={COLOR.PRIMARY_ORANGE} fontSize={16}>
-            {order?.phoneNumber}
+            {order?.from} - {order?.to}
           </CText>
         </View>
         <View style={styles.infoWrap}>
