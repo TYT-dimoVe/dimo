@@ -16,4 +16,5 @@ export interface searchState {
   round: number;
   promotePercent: number;
   isDisableBtn: boolean;
+  promotionId: string;
   }

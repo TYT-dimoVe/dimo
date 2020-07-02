@@ -45,7 +45,7 @@ class ListNotiComponent extends React.Component<Props, State> {
 
   renderItem = (item: any) => {
     return (
-      <View style={{ paddingHorizontal: 10 * ratio}}>
+      <View style={{ paddingHorizontal: 20 * ratio}}>
         <HTMLView
         value={item.description}
         stylesheet={HTMLStyles}
@@ -68,7 +68,7 @@ class ListNotiComponent extends React.Component<Props, State> {
           keyExtractor={(index) => index.toString()}
           renderItem={({item}) => this.renderItem(item)}
           ItemSeparatorComponent={() => (
-            <View style={{ marginHorizontal: 10 * ratio, height: 1 * ratio, backgroundColor: COLOR.DEACTIVE_GRAY }} />
+            <View style={{ marginHorizontal: 20 * ratio, height: 1 * ratio, backgroundColor: COLOR.DEACTIVE_GRAY, marginVertical: 10 * ratio }} />
           )}
         />
 
@@ -104,7 +104,7 @@ const HTMLStyles = StyleSheet.create({
     fontSize: 16 * ratio,
     fontFamily: 'SourceSansPro-Regular',
     color: COLOR.DARK_BLUE,
-    marginVertical: 3 * ratio,
+    marginVertical: 4 * ratio,
     textAlign: 'justify'
   },
   strong: {

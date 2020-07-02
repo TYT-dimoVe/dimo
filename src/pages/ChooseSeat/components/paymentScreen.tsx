@@ -104,6 +104,7 @@ export class PaymentComponent extends React.Component<Props, State> {
       const val = {
         round1,
         round2,
+        promotionId: this.props.promotionId,
         customerName: this.props.customerInfo.customerName,
         phoneNumber: this.props.customerInfo.phoneNumber,
         identityId: this.props.customerInfo.identityId,
@@ -130,9 +131,11 @@ export class PaymentComponent extends React.Component<Props, State> {
           busOperatorId: this.props.round1.busOperatorId,
           totalTicketAmount: this.props.seatRound1.seats?.length,
           seatId: this.props.seatRound1.seats,
+          promotionId: this.props.promotionId,
           customerName: this.props.customerInfo.customerName,
           phoneNumber: this.props.customerInfo.phoneNumber,
           identityId: this.props.customerInfo.identityId,
+          customerEmail: this.props.customerInfo.customerEmail || '',
           paymentCode: this.state.chooseMethod,
           paymentTitle: this.state.methodTitle,
           paymentStatus:

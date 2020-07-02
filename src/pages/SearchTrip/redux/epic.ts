@@ -1,5 +1,5 @@
 import { GlobalLoadingSetup, GlobalModalSetup } from 'components';
-import { GetFilter, GetFilterFailed, GetFilterSuccess, GetSeat, GetSeatFailed, GetSeatSuccess, Submit2Ticket, Submit2TicketFailed, Submit2TicketSuccess, SubmitPromoteCode, SubmitPromoteCodeFailed, SubmitPromoteCodeSuccess, SubmitTicket, SubmitTicketFailed, SubmitTicketSuccess } from 'pages/SearchTrip/redux/actions';
+import { GetFilter, GetFilterFailed, GetFilterSuccess, GetSeat, GetSeatFailed, GetSeatSuccess, Submit2Ticket, Submit2TicketFailed, Submit2TicketSuccess, SubmitPromoteCode, SubmitPromoteCodeFailed, SubmitPromoteCodeSuccess, SubmitTicket, SubmitTicketFailed, SubmitTicketSuccess, ClearPromotion } from 'pages/SearchTrip/redux/actions';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { Observable } from 'redux';
 import { combineEpics, ofType } from 'redux-observable';
@@ -194,11 +194,12 @@ const finishSubmit$ = (action$: Observable<PlainAction>) =>
 action$.pipe(
   ofType(SubmitTicketSuccess.type, Submit2TicketSuccess.type),
   map((action: any) => {
+    ClearPromotion.get();
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'Main' })],
     });
-    return store.dispatch(resetAction);
+    return  store.dispatch(resetAction);
   }),
 );
 
@@ -217,7 +218,11 @@ action$.pipe(
     }).pipe(
       map((value) => {
         if ((value as any).result) {
-          return SubmitPromoteCodeSuccess.get((value as any).result);
+          const data = {
+            result: (value as any).result,
+            promotionId: action.payload.promotionCode
+          }
+          return SubmitPromoteCodeSuccess.get(data);
         }
         return SubmitPromoteCodeFailed.get();
       }),
@@ -228,4 +233,12 @@ action$.pipe(
   }),
 );
 
-export const searchEpics = combineEpics(getFilter$, getFilterSuccess$, getSeats$ , getSeatsSuccess$, submitTicket$, finishSubmit$, submit2Ticket$, submitPromoteCode$);
+const clearPromote$ = (action$: Observable<PlainAction>) =>
+action$.pipe(
+  ofType(SubmitTicketSuccess.type, Submit2TicketSuccess.type),
+  map((action: any) => {
+    return ClearPromotion.get();
+  }),
+);
+
+export const searchEpics = combineEpics(getFilter$, getFilterSuccess$, getSeats$ , getSeatsSuccess$, submitTicket$, finishSubmit$, submit2Ticket$, submitPromoteCode$, clearPromote$);
