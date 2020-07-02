@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   boxContent: {
     width: 300,
-    height: 250,
+    height: 250 * ratio,
     backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
