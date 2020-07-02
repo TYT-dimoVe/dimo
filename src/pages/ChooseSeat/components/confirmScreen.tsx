@@ -5,7 +5,7 @@ import {homeState} from 'pages/Home/model';
 import {SearchTrips} from 'pages/Home/redux/actions';
 import {searchState} from 'pages/SearchTrip/model';
 import React from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import { StyleSheet, View, Platform, InputAccessoryView} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {NavigationInjectedProps} from 'react-navigation';
 import {connect} from 'react-redux';
@@ -14,6 +14,7 @@ import {convertMoney} from 'utils/function';
 import {constant} from '../constant';
 import {UpdateTranship, GetPaymentMethod} from '../redux/actions';
 import { SubmitPromoteCode } from 'pages/SearchTrip/redux/actions';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -215,7 +216,7 @@ export class ConfirmComponent extends React.Component<Props, State> {
 
   renderPromotionCode = () => {
     return (
-      <View style={styles.viewWrap}>
+          <View style={styles.viewWrap}>
         <CInput
           style={styles.containerInput}
           placeholder={'Mã khuyến mãi'}
@@ -246,13 +247,16 @@ export class ConfirmComponent extends React.Component<Props, State> {
             Xác nhận
           </CText>
         </TouchableOpacity>
-      </View>
+        </View>
+
     );
   };
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+            
+      <KeyboardAwareScrollView>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.NORMAL}
           headerTitle={'Xác nhận'}
@@ -280,9 +284,10 @@ export class ConfirmComponent extends React.Component<Props, State> {
               )}
             </CText>
         </View>
-        {this.renderPromotionCode()}
+        {this.renderPromotionCode()}                  
         {this.renderBtn()}
-      </SafeAreaView>
+      </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

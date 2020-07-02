@@ -3,7 +3,6 @@ import {COLOR, HEADER_TYPE, ratio} from 'config/themeUtils';
 import {FormikErrors, FormikProps, withFormik} from 'formik';
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -56,7 +55,7 @@ class ListNotiComponent extends React.Component<Props, State> {
   }
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.NORMAL}
           headerTitle={'Thông báo'}
@@ -74,7 +73,7 @@ class ListNotiComponent extends React.Component<Props, State> {
 
         </View>
 
-      </SafeAreaView>
+      </View>
     );
   }
 }

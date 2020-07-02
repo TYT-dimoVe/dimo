@@ -13,7 +13,7 @@ const getCities$ = (action$: Observable<PlainAction>) =>
   action$.pipe(
     ofType(GetCities.type),
     exhaustMap((action: any) => {
-      GlobalLoadingSetup.getLoading().isVisible();
+      // GlobalLoadingSetup.getLoading().isVisible();
       return request<any>({
         method: 'GET',
         url: 'cities',

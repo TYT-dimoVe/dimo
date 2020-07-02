@@ -1,7 +1,6 @@
 import LottieView from 'lottie-react-native';
 import React from 'react';
 import {
-  SafeAreaView,
   StatusBar,
   Text,
   View,
@@ -36,7 +35,7 @@ export default class SplashScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="white" />
         <View style={styles.body}>
           <LottieView
@@ -48,7 +47,7 @@ export default class SplashScreen extends React.Component {
           />
           <Text style={styles.title}>dimo</Text>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     letterSpacing: 4,
-    fontFamily: 'BDPBIRGULA',
+    // fontFamily: 'BDPBIRGULA',
     color: '#FF7000',
   },
 });

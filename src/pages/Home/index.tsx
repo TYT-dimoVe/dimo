@@ -3,7 +3,7 @@ import { COLOR, HEADER_TYPE, ratio } from 'config/themeUtils';
 import moment from 'moment';
 import React from 'react';
 import {
-  Modal, SafeAreaView,
+  Modal,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback, View
@@ -371,7 +371,7 @@ class HomeComponent extends React.Component<Props, State> {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.MAIN}
           viewNoti={() => {
@@ -500,7 +500,7 @@ class HomeComponent extends React.Component<Props, State> {
             </View>
           </TouchableWithoutFeedback>
         </Modal>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -569,6 +569,7 @@ const styles = StyleSheet.create({
     elevation: 2 * ratio,
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 9999,
   },
   datePickWrap: {
     backgroundColor: COLOR.WHITE,

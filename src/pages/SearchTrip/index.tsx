@@ -10,7 +10,6 @@ import {
 import React from 'react';
 import {
   FlatList,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -146,6 +145,7 @@ class SearchTripsComponent extends React.Component<Props, State> {
     const val = {
       from: round === 1 ? this.props.pickUpCode : this.props.dropDownCode,
       to: round === 1 ? this.props.dropDownCode : this.props.pickUpCode,
+      round: round,
     };
     this.props.getFilter(val);
   };
@@ -178,7 +178,7 @@ class SearchTripsComponent extends React.Component<Props, State> {
   render() {
     const round = this.props.navigation.getParam('round') || 1;
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.INFO}
           pickup={round === 1 ? this.props.pickUpCity : this.props.dropDownCity}
@@ -230,7 +230,7 @@ class SearchTripsComponent extends React.Component<Props, State> {
             }}
           />
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }

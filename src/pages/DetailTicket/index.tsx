@@ -3,9 +3,7 @@ import { COLOR, HEADER_TYPE, ratio } from 'config/themeUtils';
 import { orderState } from 'pages/SearchOrder/model';
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-
   View
 } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
@@ -151,7 +149,7 @@ export class DetailOrderComponent extends React.Component<Props, State> {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.NORMAL}
           headerTitle={'Chi tiết vé'}
@@ -164,7 +162,7 @@ export class DetailOrderComponent extends React.Component<Props, State> {
           <View style={styles.separateLine} />
           {this.renderTicketStatus()}
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }

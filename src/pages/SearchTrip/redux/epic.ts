@@ -23,7 +23,11 @@ action$.pipe(
     }).pipe(
       map((value) => {
         if ((value as any).result) {
-          return GetFilterSuccess.get((value as any).result);
+          const data = {
+            result: (value as any).result,
+            round: action.payload.round,
+          }
+          return GetFilterSuccess.get(data);
         }
         return GetFilterFailed.get();
       }),
@@ -41,7 +45,7 @@ action$.pipe(
     return store.dispatch(
       NavigationActions.navigate({
         routeName: 'Filter',
-        params: {}
+        params: { round: action.payload.round }
       }),
     );
   }),

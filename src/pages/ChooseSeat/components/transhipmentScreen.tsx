@@ -2,7 +2,7 @@ import { CHeader, CInput, CText } from 'components';
 import { COLOR, HEADER_TYPE, ratio } from 'config/themeUtils';
 import { seatsState } from 'pages/ChooseSeat/model';
 import React from 'react';
-import { SafeAreaView, StyleSheet, View, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import getDirections from 'react-native-google-maps-directions';
 import { NavigationInjectedProps } from 'react-navigation';
@@ -200,7 +200,7 @@ export class TranshipmentComponent extends React.Component<Props, State> {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.NORMAL}
           headerTitle={'Trung chuyển'}
@@ -211,7 +211,7 @@ export class TranshipmentComponent extends React.Component<Props, State> {
           {this.renderInfo()}
           {this.renderBtn()}
         </KeyboardAvoidingView>
-      </SafeAreaView>
+      </View>
     );
   }
 }

@@ -5,7 +5,6 @@ import {searchState} from 'pages/SearchTrip/model';
 import React from 'react';
 import {
   FlatList,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -357,6 +356,7 @@ class FilterComponent extends React.Component<Props, State> {
       busOperatorId: '',
       busType: '',
       isFilter: false,
+      round: round,
     }
     this.props.filterTrips(val)
   };
@@ -378,13 +378,14 @@ class FilterComponent extends React.Component<Props, State> {
       busOperatorId: this.state.chooseBusOperator,
       busType: this.state.chooseBusType,
       isFilter: true,
+      round: round,
     };
     this.props.filterTrips(val)
   };
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.NORMAL}
           headerTitle={'Lọc theo'}
@@ -397,7 +398,7 @@ class FilterComponent extends React.Component<Props, State> {
           {this.renderPrice()}
           {this.renderBtn()}
         </ScrollView>
-      </SafeAreaView>
+      </View>
     );
   }
 }

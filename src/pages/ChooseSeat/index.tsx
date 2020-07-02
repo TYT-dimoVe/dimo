@@ -2,7 +2,7 @@ import {CHeader, CText} from 'components';
 import {COLOR, HEADER_TYPE, ratio} from 'config/themeUtils';
 import {searchState} from 'pages/SearchTrip/model';
 import React from 'react';
-import {SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   FlatList,
   ScrollView,
@@ -303,7 +303,7 @@ export class ChooseSeatComponent extends React.Component<Props, State> {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.NORMAL}
           headerTitle={'Chọn vị trí'}
@@ -318,7 +318,7 @@ export class ChooseSeatComponent extends React.Component<Props, State> {
             {this.renderBtn()}
           </ScrollView>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }

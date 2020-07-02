@@ -29,9 +29,9 @@ export function searchReducer(state: searchState = initialState, action: PlainAc
     case GetFilterSuccess.type:
       return { 
         ...state,
-        listTimeStart: action.payload.timeStart,
-        listBusOperatorId: action.payload.busOperatorId,
-        listBusType: action.payload.busType,
+        listTimeStart: action.payload.result.timeStart,
+        listBusOperatorId: action.payload.result.busOperatorId,
+        listBusType: action.payload.result.busType,
        };
        case GetSeatSuccess.type:
         return {

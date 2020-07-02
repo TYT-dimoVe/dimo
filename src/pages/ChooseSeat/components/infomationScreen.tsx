@@ -2,7 +2,7 @@ import {CHeader, CInput, CText} from 'components';
 import {COLOR, HEADER_TYPE, ratio} from 'config/themeUtils';
 import {FormikErrors, FormikProps, withFormik} from 'formik';
 import React from 'react';
-import {SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {NavigationInjectedProps} from 'react-navigation';
 import {connect} from 'react-redux';
@@ -174,7 +174,7 @@ export class InformationComponent extends React.Component<
   });
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.NORMAL}
           headerTitle={'Thông tin cá nhân'}
@@ -183,7 +183,7 @@ export class InformationComponent extends React.Component<
         <View style={styles.listWrap}>
           <this.InformationForm {...this.props.values} />
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }

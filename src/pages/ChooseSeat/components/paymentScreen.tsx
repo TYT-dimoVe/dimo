@@ -5,7 +5,7 @@ import {homeState} from 'pages/Home/model';
 import {searchState} from 'pages/SearchTrip/model';
 import {SubmitTicket, Submit2Ticket} from 'pages/SearchTrip/redux/actions';
 import React from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import { StyleSheet, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {NavigationInjectedProps} from 'react-navigation';
 import {connect} from 'react-redux';
@@ -188,7 +188,7 @@ export class PaymentComponent extends React.Component<Props, State> {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader
           type={HEADER_TYPE.NORMAL}
           headerTitle={'Thanh toán'}
@@ -197,7 +197,7 @@ export class PaymentComponent extends React.Component<Props, State> {
         <View style={styles.listWrap}>{this.renderPaymentMethod()}</View>
 
         {this.renderBtn()}
-      </SafeAreaView>
+      </View>
     );
   }
 }

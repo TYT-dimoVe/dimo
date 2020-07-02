@@ -2,7 +2,7 @@ import { CHeader, CInput, CText } from 'components';
 import { COLOR, HEADER_TYPE, ratio } from 'config/themeUtils';
 import { FormikErrors, FormikProps, withFormik } from 'formik';
 import React from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -115,12 +115,12 @@ export class SearchOrderComponent extends React.Component<Props & FormikProps<Fo
   })
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <CHeader type={HEADER_TYPE.NORMAL} headerTitle={'Tra cứu'} onBack={() => this.props.navigation.goBack()} />
         <View style={styles.listWrap}>
           <this.SearchOrderForm {...this.props.values} />
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }
